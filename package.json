@@ -1,6 +1,6 @@
 {
   "name": "git-like-audit-trail",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Git like audit trail system",
   "main": "dist/bundle.js",
   "scripts": {
@@ -25,5 +25,13 @@
     "babel": "^6.23.0",
     "eslint": "^7.19.0",
     "rollup": "^2.39.0"
-  }
+  },
+  "keywords": [
+    "audit-trail",
+    "audit",
+    "trail",
+    "awcjack",
+    "git-like",
+    "git"
+  ]
 }
