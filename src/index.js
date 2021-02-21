@@ -600,7 +600,7 @@ auditTrail.prototype.createData = async function ({
         trailSession = parent
     }
     const hash = crypto.createHash('sha1')
-    const data = hash.update(JSON.stringify(change), 'utf-8');
+    const data = hash.update(JSON.stringify({...change, time: Date.now()}), 'utf-8');
     const commitHash = data.digest('hex');
 
     const insertdata = {
