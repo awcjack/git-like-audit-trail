@@ -232,3 +232,4 @@ const result = await _auditTrail.checkout({
 * handle merge (may or may not implement)
 * custom client
 * provide frontend demo
+* handle batch CUD in demo
