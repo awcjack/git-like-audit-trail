@@ -1186,7 +1186,9 @@ auditTrail.prototype.createData = /*#__PURE__*/function () {
             }
 
             hash = crypto__default['default'].createHash('sha1');
-            data = hash.update(JSON.stringify(change), 'utf-8');
+            data = hash.update(JSON.stringify(_objectSpread$1(_objectSpread$1({}, change), {}, {
+              time: Date.now()
+            })), 'utf-8');
             commitHash = data.digest('hex');
             insertdata = _objectSpread$1(_objectSpread$1({
               categoryId: categoryId,
