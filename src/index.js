@@ -142,6 +142,117 @@ function createTreeDiagram({
     }
 }
 
+async function createTreeDiagramD3({
+    commitHashMap,
+    index = 0,
+    level = 0,
+    size = 10,
+    path = "",
+    onlyCurrentBranch = false,
+    before = 5,
+    currentCommit,
+    getCommitInfo,
+    client
+}) {
+    const result = {}
+    result.children = []
+    const currentIndex = index
+    const commitHash = commitHashMap.substring(index + 1 + level.toString().length + 1, index + 1 + level.toString().length + 1 + 40)
+    result.name = commitHash
+    if (getCommitInfo) {
+        const _result = await queryElasticseaerch({
+            commitHashArray: [commitHash],
+            client
+        })
+        result.info = _result?.body?.hits?.hits?.[0]?._source
+    }
+
+    index = commitHashMap.indexOf(`^${level + 1}_`, index)
+    if (new RegExp('\\^[0-9]{1,}_').test(commitHashMap.substring(currentIndex + 2, index - 1)) || index === -1 || size <= 0) { // currentIndex + 2 for handling getRightmostIndexBeforeEnd case
+        // if have other level between current level & next level or no next level --> current level is branch out / head --> no children --> return 
+        delete result.children
+        return result
+    }
+    console.log("result", result)
+
+    if (onlyCurrentBranch && before > 0) {
+        const targetIndex = commitHashMap.indexOf(`_${currentCommit}`)
+        const closestIndex = getRightmostIndexBeforeEnd({
+            input: commitHashMap.substring(0, targetIndex),
+            searchText: `^${level + 1}_`,
+            index,
+            end: targetIndex
+        })
+        const child = await createTreeDiagramD3({
+            commitHashMap,
+            index: closestIndex,
+            level: level + 1,
+            size: size - 1,
+            path,
+            onlyCurrentBranch,
+            before: before - 1,
+            getCommitInfo,
+            currentCommit,
+            client
+        })
+        result.children.push(child)
+        return result
+    }
+
+    // branch out checking
+    let nextTwoIndex = commitHashMap.indexOf(`^${level + 2}_`, index)
+    console.log("nextTwoIndex", nextTwoIndex)
+    if (nextTwoIndex === -1) {
+        nextTwoIndex = commitHashMap.length
+    }
+    const nextSameLevelIndex = commitHashMap.indexOf(`^${level}_`, index + 1)
+    console.log("nextSameLevelIndex", nextSameLevelIndex)
+    let _indexArray = []
+    let _index = commitHashMap.indexOf(`^${level + 1}_`, index)
+    console.log("_index", _index)
+    while (_index !== -1 && _index < (nextSameLevelIndex != - 1 ? nextSameLevelIndex : commitHashMap.length)) {
+        _indexArray.push(_index)
+        _index = commitHashMap.indexOf(`^${level + 1}_`, _index + 1)
+    }
+    console.log("_indexArray", _indexArray)
+    if (_indexArray.length > 1) {
+        // branch out --> array
+        for (let i = 0; i < _indexArray.length; i++) {
+            console.log("_indexArray[i]", `${i} ${_indexArray[i]}`)
+            const child = await createTreeDiagramD3({
+                commitHashMap,
+                index: _indexArray[i],
+                level: level + 1,
+                size: size - 1,
+                path,
+                onlyCurrentBranch,
+                before: before - 1,
+                getCommitInfo,
+                currentCommit,
+                client
+            })
+            result.children.push(child)
+        }
+        console.log("result.children", result.children)
+        return result
+    } else {
+        const child = await createTreeDiagramD3({
+            commitHashMap,
+            index,
+            level: level + 1,
+            size: size - 1,
+            path,
+            onlyCurrentBranch,
+            before: before - 1,
+            getCommitInfo,
+            currentCommit,
+            client
+        })
+        result.children.push(child)
+        return result
+    }
+}
+
 async function queryElasticseaerch({
     commitHashArray,
     client
@@ -154,9 +265,35 @@ async function queryElasticseaerch({
     return result
 }
 
+function addCurrentCommit({
+    input,
+    currentCommit
+}) {
+    const result = {}
+    const inputKeys = Object.keys(input)
+    for (let i = 0; i < inputKeys.length; i++) {
+        const _tmp = addCurrentCommit({
+            input: input[inputKeys[i]],
+            currentCommit
+        })
+        if (currentCommit === inputKeys[i]) {
+            result[inputKeys[i]] = {
+                ..._tmp,
+                currentCommit: true
+            }
+        } else {
+            result[inputKeys[i]] = {
+                ..._tmp,
+            }
+        }
+    }
+    return result
+}
+
 async function getCommitHashInfo({
     input,
-    client
+    client,
+    currentCommit
 }) {
     const result = {}
     const inputKeys = Object.keys(input)
@@ -167,12 +304,20 @@ async function getCommitHashInfo({
         })
         const _tmp = await getCommitHashInfo({
             input: input[inputKeys[i]],
-            size: 1,
-            client
+            client,
+            currentCommit
         })
-        result[inputKeys[i]] = {
-            ..._tmp,
-            info: info?.body?.hits?.hits?.[0]?._source
+        if (currentCommit === inputKeys[i]) {
+            result[inputKeys[i]] = {
+                ..._tmp,
+                info: info?.body?.hits?.hits?.[0]?._source,
+                currentCommit: true
+            }
+        } else {
+            result[inputKeys[i]] = {
+                ..._tmp,
+                info: info?.body?.hits?.hits?.[0]?._source
+            }
         }
     }
     return result
@@ -335,7 +480,7 @@ auditTrail.prototype.batchQueryByCommitHash = async function ({
     return result?.body?.hits?.hits?.map(data => data?._source)
 }
 
-// Query for tree object
+// Query for tree object array
 auditTrail.prototype.query = async function ({
     commitHashMap = "{}", // existing commit map
     commitHash = "", // query from hash (user current commit)
@@ -386,9 +531,72 @@ auditTrail.prototype.query = async function ({
         if (getCommitInfo) {
             result = await getCommitHashInfo({
                 input: result,
-                client: this.client
+                client: this.client,
+                currentCommit: commitHash
+            })
+        } else {
+            result = addCurrentCommit({
+                input: result,
+                currentCommit: commitHash
             })
         }
+
+        realIndexArray.push(result)
+    }
+
+    return realIndexArray
+}
+
+// Query for D3 tree object array
+auditTrail.prototype.queryD3 = async function ({
+    commitHashMap = "{}", // existing commit map
+    commitHash = "", // query from hash (user current commit)
+    before = 5, // include 5 commit (level) before
+    after = 5,// include 5 commit (level) after
+    onlyCurrentBranch = false, //only reveal current branch
+    getCommitInfo = true // query commit info
+}) {
+    const commitMap = yamlLikeStringParser({
+        input: commitHashMap
+    })
+    if (Object.keys(commitMap)?.length === 0 || !commitHash || (before === 0 && after === 0)) {
+        console.log("CommitHashMap or commitHash empty or both before and after size set 0")
+        return []
+    }
+    const currentLevel = parseInt((commitHashMap.match(new RegExp(`\\^([0-9]+)_${commitHash}`))?.[1] ?? 0), 10) ?? 0
+    let startingIndexArray = []
+    const currentIndex = commitHashMap.indexOf(`^${currentLevel}_${commitHash}`)
+    if (!onlyCurrentBranch) {
+        let _index = commitHashMap.indexOf(`^${(currentLevel - before) > 0 ? currentLevel - before : 0}_`)
+        while (_index != -1) {
+            startingIndexArray.push(_index)
+            _index = commitHashMap.indexOf(`^${(currentLevel - before) > 0 ? currentLevel - before : 0}_`, _index + 1)
+        }
+    } else {
+        const index = getRightmostIndexBeforeEnd({
+            input: commitHashMap.substring(0, currentIndex),
+            searchText: `^${currentIndex - before}_`,
+            end: currentIndex
+        })
+        startingIndexArray = [index]
+    }
+    const realIndexArray = []
+    for (let j = 0; j < startingIndexArray.length; j++) {
+        let startingIndex = startingIndexArray[j]
+        const realStart = ((currentLevel - before) > 0 ? currentLevel - before : 0)
+        // create tree diagram with starting node starting level (current level - before level)
+        let result = await createTreeDiagramD3({
+            commitHashMap,
+            index: startingIndex,
+            level: realStart,
+            size: before + after,
+            path: "",
+            onlyCurrentBranch,
+            before: before > currentLevel ? currentLevel : before,
+            currentCommit: commitHash,
+            getCommitInfo,
+            client: this.client,
+        })
 
         realIndexArray.push(result)
     }

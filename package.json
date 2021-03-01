@@ -1,6 +1,6 @@
 {
   "name": "git-like-audit-trail",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Git like audit trail system",
   "main": "dist/bundle.js",
   "scripts": {
@@ -8,6 +8,7 @@
   },
   "author": "awcjack",
   "license": "MIT",
+  "homepage": "https://github.com/awcjack/git-like-audit-trail",
   "dependencies": {
     "@elastic/elasticsearch": "^7.10.0",
     "deep-object-diff": "awcjack/deep-object-diff",
