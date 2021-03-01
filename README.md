@@ -11,6 +11,7 @@ Using Elasticsearch (allow using custom client later) to store audit-trail data.
 
 ## Demo
 * [Backend](https://github.com/awcjack/git-like-audit-trail-backend-demo)
+* FrontEnd (Preparing)
 
 ## Usage:
 ```javascript
@@ -63,6 +64,7 @@ const _auditTrail = new auditTrail({
 * [createData](#createData): Create audit trail data
 * [appendCommitMap](#appendCommitMap): Append commitHash (obtained after createData) into CommitMap
 * [query](#query): Query git tree structure
+* [queryD3](#queryD3): Query git tree structure in D3 hierarchy
 * [queryByCommitHash](#queryByCommitHash): Query commit info by commitHash
 * [batchQueryByCommitHash](#batchQueryByCommitHash): Query commit info by commitHashArray
 * [revertCommit](#revertCommit): Revert commit like git
@@ -137,6 +139,23 @@ console.log(tree)
 // removed commit info prevent too long
 */
 ```
+
+### queryD3:
+```javascript
+const tree = _auditTrail.queryD3({
+    commitHashMap: "{}", // existing commit map
+    commitHash: "", // query from hash (user current commit)
+    before: 5, // include 5 commit (level) before
+    after: 5,// include 5 commit (level) after
+    onlyCurrentBranch: false, //only reveal current branch
+    getCommitInfo: false // query commit info
+})
+console.log(tree)
+/*
+[{"children":[{"children":{"name":"da498b3a30a06db903cc25cfac07517e3e08216c", "info": {...}}],"name":"2a599a5d724d659b8ebb6565a626de40d52db10a","info":{"categoryId":"testTable","userId":"awcjack","dataId":"1","name":"test","action":"CREATE","change":"{\"added\":{\"id\":{\"after\":\"1\"},\"name\":{\"after\":\"test\"}},\"deleted\":{},\"updated\":{}}","time":1614433429834,"parentTrail":"b343ac62-7807-4d68-8518-f4d18e59e781","commitHash":"2a599a5d724d659b8ebb6565a626de40d52db10a"}}]
+*/
+```
+
 ### queryByCommitHash:
 ```javascript
 const commit = _auditTrail.queryByCommitHash({

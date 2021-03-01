@@ -1,6 +1,6 @@
 {
   "name": "git-like-audit-trail",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Git like audit trail system",
   "main": "dist/bundle.js",
   "scripts": {
