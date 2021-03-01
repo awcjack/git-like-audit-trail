@@ -173,7 +173,6 @@ async function createTreeDiagramD3({
         delete result.children
         return result
     }
-    console.log("result", result)
 
     if (onlyCurrentBranch && before > 0) {
         const targetIndex = commitHashMap.indexOf(`_${currentCommit}`)
@@ -201,24 +200,19 @@ async function createTreeDiagramD3({
 
     // branch out checking
     let nextTwoIndex = commitHashMap.indexOf(`^${level + 2}_`, index)
-    console.log("nextTwoIndex", nextTwoIndex)
     if (nextTwoIndex === -1) {
         nextTwoIndex = commitHashMap.length
     }
     const nextSameLevelIndex = commitHashMap.indexOf(`^${level}_`, index + 1)
-    console.log("nextSameLevelIndex", nextSameLevelIndex)
     let _indexArray = []
     let _index = commitHashMap.indexOf(`^${level + 1}_`, index)
-    console.log("_index", _index)
     while (_index !== -1 && _index < (nextSameLevelIndex != - 1 ? nextSameLevelIndex : commitHashMap.length)) {
         _indexArray.push(_index)
         _index = commitHashMap.indexOf(`^${level + 1}_`, _index + 1)
     }
-    console.log("_indexArray", _indexArray)
     if (_indexArray.length > 1) {
         // branch out --> array
         for (let i = 0; i < _indexArray.length; i++) {
-            console.log("_indexArray[i]", `${i} ${_indexArray[i]}`)
             const child = await createTreeDiagramD3({
                 commitHashMap,
                 index: _indexArray[i],
@@ -233,7 +227,6 @@ async function createTreeDiagramD3({
             })
             result.children.push(child)
         }
-        console.log("result.children", result.children)
         return result
     } else {
         const child = await createTreeDiagramD3({
