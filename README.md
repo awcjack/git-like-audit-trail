@@ -148,11 +148,13 @@ const tree = _auditTrail.queryD3({
     before: 5, // include 5 commit (level) before
     after: 5,// include 5 commit (level) after
     onlyCurrentBranch: false, //only reveal current branch
-    getCommitInfo: false // query commit info
+    getCommitInfo: false, // query commit info
+    ignore: [], // ignore array of commit info object (delete from object)
+    format, // commit info format, "test" (commit info parse to key: value pair and concat with \n), "object" (commit info)
 })
 console.log(tree)
 /*
-[{"children":[{"children":{"name":"da498b3a30a06db903cc25cfac07517e3e08216c", "info": {...}}],"name":"2a599a5d724d659b8ebb6565a626de40d52db10a","info":{"categoryId":"testTable","userId":"awcjack","dataId":"1","name":"test","action":"CREATE","change":"{\"added\":{\"id\":{\"after\":\"1\"},\"name\":{\"after\":\"test\"}},\"deleted\":{},\"updated\":{}}","time":1614433429834,"parentTrail":"b343ac62-7807-4d68-8518-f4d18e59e781","commitHash":"2a599a5d724d659b8ebb6565a626de40d52db10a"}}]
+[{"children":[{"children":{"name":"da498b3a30a06db903cc25cfac07517e3e08216c", "info": {...}, "currentCommit": true})],"name":"2a599a5d724d659b8ebb6565a626de40d52db10a","info":{"categoryId":"testTable","userId":"awcjack","dataId":"1","name":"test","action":"CREATE","change":"{\"added\":{\"id\":{\"after\":\"1\"},\"name\":{\"after\":\"test\"}},\"deleted\":{},\"updated\":{}}","time":1614433429834,"parentTrail":"b343ac62-7807-4d68-8518-f4d18e59e781","commitHash":"2a599a5d724d659b8ebb6565a626de40d52db10a"}}]
 */
 ```
 

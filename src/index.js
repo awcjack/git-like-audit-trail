@@ -152,6 +152,8 @@ async function createTreeDiagramD3({
     before = 5,
     currentCommit,
     getCommitInfo,
+    ignore,
+    format,
     client
 }) {
     const result = {}
@@ -159,12 +161,27 @@ async function createTreeDiagramD3({
     const currentIndex = index
     const commitHash = commitHashMap.substring(index + 1 + level.toString().length + 1, index + 1 + level.toString().length + 1 + 40)
     result.name = commitHash
+    if (commitHash === currentCommit) {
+        result.currentCommit = true
+    }
     if (getCommitInfo) {
         const _result = await queryElasticseaerch({
             commitHashArray: [commitHash],
             client
         })
-        result.info = _result?.body?.hits?.hits?.[0]?._source
+        let info = _result?.body?.hits?.hits?.[0]?._source
+        for (const _ignore of ignore) {
+            delete info[_ignore]
+        }
+        if (format === "text") {
+            const _tmp = info
+            info = []
+            for (const [key, value] of Object.entries(_tmp)) {
+                info.push(`${key}: ${value}`)
+            }
+            info = info.join("\n")
+        }
+        result.info = info
     }
 
     index = commitHashMap.indexOf(`^${level + 1}_`, index)
@@ -192,6 +209,8 @@ async function createTreeDiagramD3({
             before: before - 1,
             getCommitInfo,
             currentCommit,
+            ignore,
+            format,
             client
         })
         result.children.push(child)
@@ -223,6 +242,8 @@ async function createTreeDiagramD3({
                 before: before - 1,
                 getCommitInfo,
                 currentCommit,
+                ignore,
+                format,
                 client
             })
             result.children.push(child)
@@ -239,6 +260,8 @@ async function createTreeDiagramD3({
             before: before - 1,
             getCommitInfo,
             currentCommit,
+            ignore,
+            format,
             client
         })
         result.children.push(child)
@@ -547,8 +570,13 @@ auditTrail.prototype.queryD3 = async function ({
     before = 5, // include 5 commit (level) before
     after = 5,// include 5 commit (level) after
     onlyCurrentBranch = false, //only reveal current branch
-    getCommitInfo = true // query commit info
+    getCommitInfo = true, // query commit info
+    ignore = [], // ignore field in info
+    format = "object", // "text" or "object"
 }) {
+    if (typeof ignore === "string") {
+        ignore = [ignore]
+    }
     const commitMap = yamlLikeStringParser({
         input: commitHashMap
     })
@@ -588,6 +616,8 @@ auditTrail.prototype.queryD3 = async function ({
             before: before > currentLevel ? currentLevel : before,
             currentCommit: commitHash,
             getCommitInfo,
+            ignore,
+            format,
             client: this.client,
         })
 

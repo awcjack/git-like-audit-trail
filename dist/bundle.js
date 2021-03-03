@@ -1,5 +1,6 @@
 'use strict';
 
+var _slicedToArray = require('@babel/runtime/helpers/slicedToArray');
 var _objectWithoutProperties = require('@babel/runtime/helpers/objectWithoutProperties');
 var _regeneratorRuntime = require('@babel/runtime/regenerator');
 var _asyncToGenerator = require('@babel/runtime/helpers/asyncToGenerator');
@@ -14,6 +15,7 @@ var _typeof = require('@babel/runtime/helpers/typeof');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+var _slicedToArray__default = /*#__PURE__*/_interopDefaultLegacy(_slicedToArray);
 var _objectWithoutProperties__default = /*#__PURE__*/_interopDefaultLegacy(_objectWithoutProperties);
 var _regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(_regeneratorRuntime);
 var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
@@ -239,6 +241,12 @@ function yamlLikeStringParser(_ref3) {
   return result;
 }
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$1(Object(source), true).forEach(function (key) { _defineProperty__default['default'](target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -417,39 +425,69 @@ function createTreeDiagramD3(_x) {
 
 function _createTreeDiagramD() {
   _createTreeDiagramD = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee9(_ref3) {
-    var commitHashMap, _ref3$index, index, _ref3$level, level, _ref3$size, size, _ref3$path, path, _ref3$onlyCurrentBran, onlyCurrentBranch, _ref3$before, before, currentCommit, getCommitInfo, client, result, currentIndex, commitHash, _result$body3, _result$body3$hits, _result$body3$hits$hi, _result$body3$hits$hi2, _result, targetIndex, closestIndex, child, nextTwoIndex, nextSameLevelIndex, _indexArray, _index, i, _child, _child2;
+    var commitHashMap, _ref3$index, index, _ref3$level, level, _ref3$size, size, _ref3$path, path, _ref3$onlyCurrentBran, onlyCurrentBranch, _ref3$before, before, currentCommit, getCommitInfo, ignore, format, client, result, currentIndex, commitHash, _result$body3, _result$body3$hits, _result$body3$hits$hi, _result$body3$hits$hi2, _result, info, _iterator, _step, _ignore, _tmp, _i5, _Object$entries, _Object$entries$_i, key, value, targetIndex, closestIndex, child, nextTwoIndex, nextSameLevelIndex, _indexArray, _index, i, _child, _child2;
 
     return _regeneratorRuntime__default['default'].wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
-            commitHashMap = _ref3.commitHashMap, _ref3$index = _ref3.index, index = _ref3$index === void 0 ? 0 : _ref3$index, _ref3$level = _ref3.level, level = _ref3$level === void 0 ? 0 : _ref3$level, _ref3$size = _ref3.size, size = _ref3$size === void 0 ? 10 : _ref3$size, _ref3$path = _ref3.path, path = _ref3$path === void 0 ? "" : _ref3$path, _ref3$onlyCurrentBran = _ref3.onlyCurrentBranch, onlyCurrentBranch = _ref3$onlyCurrentBran === void 0 ? false : _ref3$onlyCurrentBran, _ref3$before = _ref3.before, before = _ref3$before === void 0 ? 5 : _ref3$before, currentCommit = _ref3.currentCommit, getCommitInfo = _ref3.getCommitInfo, client = _ref3.client;
+            commitHashMap = _ref3.commitHashMap, _ref3$index = _ref3.index, index = _ref3$index === void 0 ? 0 : _ref3$index, _ref3$level = _ref3.level, level = _ref3$level === void 0 ? 0 : _ref3$level, _ref3$size = _ref3.size, size = _ref3$size === void 0 ? 10 : _ref3$size, _ref3$path = _ref3.path, path = _ref3$path === void 0 ? "" : _ref3$path, _ref3$onlyCurrentBran = _ref3.onlyCurrentBranch, onlyCurrentBranch = _ref3$onlyCurrentBran === void 0 ? false : _ref3$onlyCurrentBran, _ref3$before = _ref3.before, before = _ref3$before === void 0 ? 5 : _ref3$before, currentCommit = _ref3.currentCommit, getCommitInfo = _ref3.getCommitInfo, ignore = _ref3.ignore, format = _ref3.format, client = _ref3.client;
             result = {};
             result.children = [];
             currentIndex = index;
             commitHash = commitHashMap.substring(index + 1 + level.toString().length + 1, index + 1 + level.toString().length + 1 + 40);
             result.name = commitHash;
 
+            if (commitHash === currentCommit) {
+              result.currentCommit = true;
+            }
+
             if (!getCommitInfo) {
-              _context9.next = 11;
+              _context9.next = 16;
               break;
             }
 
-            _context9.next = 9;
+            _context9.next = 10;
             return queryElasticseaerch({
               commitHashArray: [commitHash],
               client: client
             });
 
-          case 9:
+          case 10:
             _result = _context9.sent;
-            result.info = _result === null || _result === void 0 ? void 0 : (_result$body3 = _result.body) === null || _result$body3 === void 0 ? void 0 : (_result$body3$hits = _result$body3.hits) === null || _result$body3$hits === void 0 ? void 0 : (_result$body3$hits$hi = _result$body3$hits.hits) === null || _result$body3$hits$hi === void 0 ? void 0 : (_result$body3$hits$hi2 = _result$body3$hits$hi[0]) === null || _result$body3$hits$hi2 === void 0 ? void 0 : _result$body3$hits$hi2._source;
+            info = _result === null || _result === void 0 ? void 0 : (_result$body3 = _result.body) === null || _result$body3 === void 0 ? void 0 : (_result$body3$hits = _result$body3.hits) === null || _result$body3$hits === void 0 ? void 0 : (_result$body3$hits$hi = _result$body3$hits.hits) === null || _result$body3$hits$hi === void 0 ? void 0 : (_result$body3$hits$hi2 = _result$body3$hits$hi[0]) === null || _result$body3$hits$hi2 === void 0 ? void 0 : _result$body3$hits$hi2._source;
+            _iterator = _createForOfIteratorHelper(ignore);
 
-          case 11:
+            try {
+              for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                _ignore = _step.value;
+                delete info[_ignore];
+              }
+            } catch (err) {
+              _iterator.e(err);
+            } finally {
+              _iterator.f();
+            }
+
+            if (format === "text") {
+              _tmp = info;
+              info = [];
+
+              for (_i5 = 0, _Object$entries = Object.entries(_tmp); _i5 < _Object$entries.length; _i5++) {
+                _Object$entries$_i = _slicedToArray__default['default'](_Object$entries[_i5], 2), key = _Object$entries$_i[0], value = _Object$entries$_i[1];
+                info.push("".concat(key, ": ").concat(value));
+              }
+
+              info = info.join("\n");
+            }
+
+            result.info = info;
+
+          case 16:
             index = commitHashMap.indexOf("^".concat(level + 1, "_"), index);
 
             if (!(new RegExp('\\^[0-9]{1,}_').test(commitHashMap.substring(currentIndex + 2, index - 1)) || index === -1 || size <= 0)) {
-              _context9.next = 15;
+              _context9.next = 20;
               break;
             }
 
@@ -458,11 +496,9 @@ function _createTreeDiagramD() {
             delete result.children;
             return _context9.abrupt("return", result);
 
-          case 15:
-            console.log("result", result);
-
+          case 20:
             if (!(onlyCurrentBranch && before > 0)) {
-              _context9.next = 24;
+              _context9.next = 28;
               break;
             }
 
@@ -473,7 +509,7 @@ function _createTreeDiagramD() {
               index: index,
               end: targetIndex
             });
-            _context9.next = 21;
+            _context9.next = 25;
             return createTreeDiagramD3({
               commitHashMap: commitHashMap,
               index: closestIndex,
@@ -484,28 +520,27 @@ function _createTreeDiagramD() {
               before: before - 1,
               getCommitInfo: getCommitInfo,
               currentCommit: currentCommit,
+              ignore: ignore,
+              format: format,
               client: client
             });
 
-          case 21:
+          case 25:
             child = _context9.sent;
             result.children.push(child);
             return _context9.abrupt("return", result);
 
-          case 24:
+          case 28:
             // branch out checking
             nextTwoIndex = commitHashMap.indexOf("^".concat(level + 2, "_"), index);
-            console.log("nextTwoIndex", nextTwoIndex);
 
             if (nextTwoIndex === -1) {
               nextTwoIndex = commitHashMap.length;
             }
 
             nextSameLevelIndex = commitHashMap.indexOf("^".concat(level, "_"), index + 1);
-            console.log("nextSameLevelIndex", nextSameLevelIndex);
             _indexArray = [];
             _index = commitHashMap.indexOf("^".concat(level + 1, "_"), index);
-            console.log("_index", _index);
 
             while (_index !== -1 && _index < (nextSameLevelIndex != -1 ? nextSameLevelIndex : commitHashMap.length)) {
               _indexArray.push(_index);
@@ -513,10 +548,8 @@ function _createTreeDiagramD() {
               _index = commitHashMap.indexOf("^".concat(level + 1, "_"), _index + 1);
             }
 
-            console.log("_indexArray", _indexArray);
-
             if (!(_indexArray.length > 1)) {
-              _context9.next = 49;
+              _context9.next = 47;
               break;
             }
 
@@ -524,12 +557,11 @@ function _createTreeDiagramD() {
 
           case 36:
             if (!(i < _indexArray.length)) {
-              _context9.next = 45;
+              _context9.next = 44;
               break;
             }
 
-            console.log("_indexArray[i]", "".concat(i, " ").concat(_indexArray[i]));
-            _context9.next = 40;
+            _context9.next = 39;
             return createTreeDiagramD3({
               commitHashMap: commitHashMap,
               index: _indexArray[i],
@@ -540,24 +572,25 @@ function _createTreeDiagramD() {
               before: before - 1,
               getCommitInfo: getCommitInfo,
               currentCommit: currentCommit,
+              ignore: ignore,
+              format: format,
               client: client
             });
 
-          case 40:
+          case 39:
             _child = _context9.sent;
             result.children.push(_child);
 
-          case 42:
+          case 41:
             i++;
             _context9.next = 36;
             break;
 
-          case 45:
-            console.log("result.children", result.children);
+          case 44:
             return _context9.abrupt("return", result);
 
-          case 49:
-            _context9.next = 51;
+          case 47:
+            _context9.next = 49;
             return createTreeDiagramD3({
               commitHashMap: commitHashMap,
               index: index,
@@ -568,15 +601,17 @@ function _createTreeDiagramD() {
               before: before - 1,
               getCommitInfo: getCommitInfo,
               currentCommit: currentCommit,
+              ignore: ignore,
+              format: format,
               client: client
             });
 
-          case 51:
+          case 49:
             _child2 = _context9.sent;
             result.children.push(_child2);
             return _context9.abrupt("return", result);
 
-          case 54:
+          case 52:
           case "end":
             return _context9.stop();
         }
@@ -1060,26 +1095,31 @@ auditTrail.prototype.queryD3 = /*#__PURE__*/function () {
   var _ref16 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee4(_ref15) {
     var _Object$keys2, _parseInt4, _commitHashMap$match$4, _commitHashMap$match4;
 
-    var _ref15$commitHashMap, commitHashMap, _ref15$commitHash, commitHash, _ref15$before, before, _ref15$after, after, _ref15$onlyCurrentBra, onlyCurrentBranch, _ref15$getCommitInfo, getCommitInfo, commitMap, currentLevel, startingIndexArray, currentIndex, _index, index, realIndexArray, j, startingIndex, realStart, result;
+    var _ref15$commitHashMap, commitHashMap, _ref15$commitHash, commitHash, _ref15$before, before, _ref15$after, after, _ref15$onlyCurrentBra, onlyCurrentBranch, _ref15$getCommitInfo, getCommitInfo, _ref15$ignore, ignore, _ref15$format, format, commitMap, currentLevel, startingIndexArray, currentIndex, _index, index, realIndexArray, j, startingIndex, realStart, result;
 
     return _regeneratorRuntime__default['default'].wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _ref15$commitHashMap = _ref15.commitHashMap, commitHashMap = _ref15$commitHashMap === void 0 ? "{}" : _ref15$commitHashMap, _ref15$commitHash = _ref15.commitHash, commitHash = _ref15$commitHash === void 0 ? "" : _ref15$commitHash, _ref15$before = _ref15.before, before = _ref15$before === void 0 ? 5 : _ref15$before, _ref15$after = _ref15.after, after = _ref15$after === void 0 ? 5 : _ref15$after, _ref15$onlyCurrentBra = _ref15.onlyCurrentBranch, onlyCurrentBranch = _ref15$onlyCurrentBra === void 0 ? false : _ref15$onlyCurrentBra, _ref15$getCommitInfo = _ref15.getCommitInfo, getCommitInfo = _ref15$getCommitInfo === void 0 ? true : _ref15$getCommitInfo;
+            _ref15$commitHashMap = _ref15.commitHashMap, commitHashMap = _ref15$commitHashMap === void 0 ? "{}" : _ref15$commitHashMap, _ref15$commitHash = _ref15.commitHash, commitHash = _ref15$commitHash === void 0 ? "" : _ref15$commitHash, _ref15$before = _ref15.before, before = _ref15$before === void 0 ? 5 : _ref15$before, _ref15$after = _ref15.after, after = _ref15$after === void 0 ? 5 : _ref15$after, _ref15$onlyCurrentBra = _ref15.onlyCurrentBranch, onlyCurrentBranch = _ref15$onlyCurrentBra === void 0 ? false : _ref15$onlyCurrentBra, _ref15$getCommitInfo = _ref15.getCommitInfo, getCommitInfo = _ref15$getCommitInfo === void 0 ? true : _ref15$getCommitInfo, _ref15$ignore = _ref15.ignore, ignore = _ref15$ignore === void 0 ? [] : _ref15$ignore, _ref15$format = _ref15.format, format = _ref15$format === void 0 ? "object" : _ref15$format;
+
+            if (typeof ignore === "string") {
+              ignore = [ignore];
+            }
+
             commitMap = yamlLikeStringParser({
               input: commitHashMap
             });
 
             if (!(((_Object$keys2 = Object.keys(commitMap)) === null || _Object$keys2 === void 0 ? void 0 : _Object$keys2.length) === 0 || !commitHash || before === 0 && after === 0)) {
-              _context4.next = 5;
+              _context4.next = 6;
               break;
             }
 
             console.log("CommitHashMap or commitHash empty or both before and after size set 0");
             return _context4.abrupt("return", []);
 
-          case 5:
+          case 6:
             currentLevel = (_parseInt4 = parseInt((_commitHashMap$match$4 = (_commitHashMap$match4 = commitHashMap.match(new RegExp("\\^([0-9]+)_".concat(commitHash)))) === null || _commitHashMap$match4 === void 0 ? void 0 : _commitHashMap$match4[1]) !== null && _commitHashMap$match$4 !== void 0 ? _commitHashMap$match$4 : 0, 10)) !== null && _parseInt4 !== void 0 ? _parseInt4 : 0;
             startingIndexArray = [];
             currentIndex = commitHashMap.indexOf("^".concat(currentLevel, "_").concat(commitHash));
@@ -1103,16 +1143,16 @@ auditTrail.prototype.queryD3 = /*#__PURE__*/function () {
             realIndexArray = [];
             j = 0;
 
-          case 11:
+          case 12:
             if (!(j < startingIndexArray.length)) {
-              _context4.next = 21;
+              _context4.next = 22;
               break;
             }
 
             startingIndex = startingIndexArray[j];
             realStart = currentLevel - before > 0 ? currentLevel - before : 0; // create tree diagram with starting node starting level (current level - before level)
 
-            _context4.next = 16;
+            _context4.next = 17;
             return createTreeDiagramD3({
               commitHashMap: commitHashMap,
               index: startingIndex,
@@ -1123,22 +1163,24 @@ auditTrail.prototype.queryD3 = /*#__PURE__*/function () {
               before: before > currentLevel ? currentLevel : before,
               currentCommit: commitHash,
               getCommitInfo: getCommitInfo,
+              ignore: ignore,
+              format: format,
               client: this.client
             });
 
-          case 16:
+          case 17:
             result = _context4.sent;
             realIndexArray.push(result);
 
-          case 18:
+          case 19:
             j++;
-            _context4.next = 11;
+            _context4.next = 12;
             break;
 
-          case 21:
+          case 22:
             return _context4.abrupt("return", realIndexArray);
 
-          case 22:
+          case 23:
           case "end":
             return _context4.stop();
         }
