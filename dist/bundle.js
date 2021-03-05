@@ -425,7 +425,7 @@ function createTreeDiagramD3(_x) {
 
 function _createTreeDiagramD() {
   _createTreeDiagramD = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee9(_ref3) {
-    var commitHashMap, _ref3$index, index, _ref3$level, level, _ref3$size, size, _ref3$path, path, _ref3$onlyCurrentBran, onlyCurrentBranch, _ref3$before, before, currentCommit, getCommitInfo, ignore, format, client, result, currentIndex, commitHash, _result$body3, _result$body3$hits, _result$body3$hits$hi, _result$body3$hits$hi2, _result, info, _iterator, _step, _ignore, _tmp, _i5, _Object$entries, _Object$entries$_i, key, value, targetIndex, closestIndex, child, nextTwoIndex, nextSameLevelIndex, _indexArray, _index, i, _child, _child2;
+    var commitHashMap, _ref3$index, index, _ref3$level, level, _ref3$size, size, _ref3$path, path, _ref3$onlyCurrentBran, onlyCurrentBranch, _ref3$before, before, currentCommit, getCommitInfo, ignore, format, client, result, currentIndex, commitHash, _result$body$hits$hit3, _result$body3, _result$body3$hits, _result$body3$hits$hi, _result$body3$hits$hi2, _result, info, _iterator, _step, _info2, _ignore, _info, _tmp, _i5, _Object$entries, _Object$entries$_i, key, value, targetIndex, closestIndex, child, nextTwoIndex, nextSameLevelIndex, _indexArray, _index, i, _child, _child2;
 
     return _regeneratorRuntime__default['default'].wrap(function _callee9$(_context9) {
       while (1) {
@@ -455,13 +455,16 @@ function _createTreeDiagramD() {
 
           case 10:
             _result = _context9.sent;
-            info = _result === null || _result === void 0 ? void 0 : (_result$body3 = _result.body) === null || _result$body3 === void 0 ? void 0 : (_result$body3$hits = _result$body3.hits) === null || _result$body3$hits === void 0 ? void 0 : (_result$body3$hits$hi = _result$body3$hits.hits) === null || _result$body3$hits$hi === void 0 ? void 0 : (_result$body3$hits$hi2 = _result$body3$hits$hi[0]) === null || _result$body3$hits$hi2 === void 0 ? void 0 : _result$body3$hits$hi2._source;
+            info = (_result$body$hits$hit3 = _result === null || _result === void 0 ? void 0 : (_result$body3 = _result.body) === null || _result$body3 === void 0 ? void 0 : (_result$body3$hits = _result$body3.hits) === null || _result$body3$hits === void 0 ? void 0 : (_result$body3$hits$hi = _result$body3$hits.hits) === null || _result$body3$hits$hi === void 0 ? void 0 : (_result$body3$hits$hi2 = _result$body3$hits$hi[0]) === null || _result$body3$hits$hi2 === void 0 ? void 0 : _result$body3$hits$hi2._source) !== null && _result$body$hits$hit3 !== void 0 ? _result$body$hits$hit3 : {};
             _iterator = _createForOfIteratorHelper(ignore);
 
             try {
               for (_iterator.s(); !(_step = _iterator.n()).done;) {
                 _ignore = _step.value;
-                delete info[_ignore];
+
+                if ((_info2 = info) !== null && _info2 !== void 0 && _info2[_ignore]) {
+                  delete info[_ignore];
+                }
               }
             } catch (err) {
               _iterator.e(err);
@@ -470,7 +473,7 @@ function _createTreeDiagramD() {
             }
 
             if (format === "text") {
-              _tmp = info;
+              _tmp = (_info = info) !== null && _info !== void 0 ? _info : {};
               info = [];
 
               for (_i5 = 0, _Object$entries = Object.entries(_tmp); _i5 < _Object$entries.length; _i5++) {
@@ -1628,13 +1631,14 @@ auditTrail.prototype.appendCommitMap = function (_ref25) {
       }));
     }
 
+    console.log("levelIndexArray", levelIndexArray);
     levelIndexArray = levelIndexArray.reverse();
     var path = [];
 
     for (var _i4 = 0; _i4 < levelIndexArray.length; _i4++) {
-      var _substring$match$, _substring$match;
+      var _i4$toString$length, _i4$toString, _substring$match$, _substring$match;
 
-      var substring = currentCommitMap.substring(levelIndexArray[_i4], levelIndexArray[_i4] + 40 + 4);
+      var substring = currentCommitMap.substring(levelIndexArray[_i4], levelIndexArray[_i4] + 40 + 4 + ((_i4$toString$length = (_i4$toString = _i4.toString()) === null || _i4$toString === void 0 ? void 0 : _i4$toString.length) !== null && _i4$toString$length !== void 0 ? _i4$toString$length : 1) - 1);
       path.push((_substring$match$ = (_substring$match = substring.match("\\^".concat(_i4, "_(.*?):"))) === null || _substring$match === void 0 ? void 0 : _substring$match[1]) !== null && _substring$match$ !== void 0 ? _substring$match$ : 0);
     }
 

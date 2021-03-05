@@ -169,12 +169,14 @@ async function createTreeDiagramD3({
             commitHashArray: [commitHash],
             client
         })
-        let info = _result?.body?.hits?.hits?.[0]?._source
+        let info = _result?.body?.hits?.hits?.[0]?._source ?? {}
         for (const _ignore of ignore) {
-            delete info[_ignore]
+            if (info?.[_ignore]) {
+                delete info[_ignore]
+            }
         }
         if (format === "text") {
-            const _tmp = info
+            const _tmp = info ?? {}
             info = []
             for (const [key, value] of Object.entries(_tmp)) {
                 info.push(`${key}: ${value}`)
@@ -891,10 +893,11 @@ auditTrail.prototype.appendCommitMap = function ({
                 end: levelIndexArray[i]
             }))
         }
+        console.log("levelIndexArray", levelIndexArray)
         levelIndexArray = levelIndexArray.reverse()
         const path = []
         for (let i = 0; i < levelIndexArray.length; i++) {
-            const substring = currentCommitMap.substring(levelIndexArray[i], levelIndexArray[i] + 40 + 4)
+            const substring = currentCommitMap.substring(levelIndexArray[i], levelIndexArray[i] + 40 + 4 + (i.toString()?.length ?? 1) - 1)
             path.push(substring.match(`\\^${i}_(.*?):`)?.[1] ?? 0)
         }
         let append = {}
