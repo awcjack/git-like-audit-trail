@@ -147,7 +147,6 @@ async function createTreeDiagramD3({
     index = 0,
     level = 0,
     size = 10,
-    path = "",
     onlyCurrentBranch = false,
     before = 5,
     currentCommit,
@@ -198,7 +197,7 @@ async function createTreeDiagramD3({
         const closestIndex = getRightmostIndexBeforeEnd({
             input: commitHashMap.substring(0, targetIndex),
             searchText: `^${level + 1}_`,
-            index,
+            index: index + 1,
             end: targetIndex
         })
         const child = await createTreeDiagramD3({
@@ -206,7 +205,6 @@ async function createTreeDiagramD3({
             index: closestIndex,
             level: level + 1,
             size: size - 1,
-            path,
             onlyCurrentBranch,
             before: before - 1,
             getCommitInfo,
@@ -239,7 +237,6 @@ async function createTreeDiagramD3({
                 index: _indexArray[i],
                 level: level + 1,
                 size: size - 1,
-                path,
                 onlyCurrentBranch,
                 before: before - 1,
                 getCommitInfo,
@@ -257,7 +254,6 @@ async function createTreeDiagramD3({
             index,
             level: level + 1,
             size: size - 1,
-            path,
             onlyCurrentBranch,
             before: before - 1,
             getCommitInfo,
@@ -349,13 +345,13 @@ function getChanges({
     },
     revert
 }) {
-    const addedChange = diffParser(changed.added, "after")
-    const deletedChange = diffParser(changed.deleted, "before")
+    const addedChange = diffParser(changed.added ?? {}, "after")
+    const deletedChange = diffParser(changed.deleted ?? {}, "before")
     let updatedChange
     if (revert) {
-        updatedChange = diffParser(changed.updated, "before")
+        updatedChange = diffParser(changed.updated ?? {}, "before")
     } else {
-        updatedChange = diffParser(changed.updated, "after")
+        updatedChange = diffParser(changed.updated ?? {}, "after")
     }
     return {
         addedChange,
@@ -598,22 +594,21 @@ auditTrail.prototype.queryD3 = async function ({
     } else {
         const index = getRightmostIndexBeforeEnd({
             input: commitHashMap.substring(0, currentIndex),
-            searchText: `^${currentIndex - before}_`,
+            searchText: `^${currentLevel - before}_`,
             end: currentIndex
         })
         startingIndexArray = [index]
     }
     const realIndexArray = []
     for (let j = 0; j < startingIndexArray.length; j++) {
-        let startingIndex = startingIndexArray[j]
+        let startingIndex = (startingIndexArray[j] !== -1 ? startingIndexArray[j] : currentIndex)
         const realStart = ((currentLevel - before) > 0 ? currentLevel - before : 0)
         // create tree diagram with starting node starting level (current level - before level)
         let result = await createTreeDiagramD3({
             commitHashMap,
             index: startingIndex,
             level: realStart,
-            size: before + after,
-            path: "",
+            size: currentLevel - before > 0 ? before + after : currentLevel + after,
             onlyCurrentBranch,
             before: before > currentLevel ? currentLevel : before,
             currentCommit: commitHash,
@@ -627,6 +622,90 @@ auditTrail.prototype.queryD3 = async function ({
     }
 
     return realIndexArray
+}
+
+async function revertCommit({
+    action,
+    changes,
+    auditTrail = true,
+    source,
+    parentTrail,
+    cherryPick = false,
+    databaseDeleteOneRowFunction,
+    databaseAddOneRowFunction,
+    databaseUpdateOneRowFunction,
+    databaseCustomFunction
+}){
+    const result = {}
+    if (action === "CREATE") {
+        // new row --> delete
+        if (cherryPick) {
+            result.added = await databaseAddOneRowFunction({
+                data: source,
+                changedObj: changes.deletedChange?.diff,
+                flattedchanged: changes.deletedChange?.change,
+                auditTrail,
+                parentTrail
+            })
+        } else {
+            result.deleted = await databaseDeleteOneRowFunction({
+                data: source,
+                changedObj: changes.addedChange?.diff,
+                flattedchanged: changes.addedChange?.change,
+                auditTrail,
+                parentTrail,
+            })
+        }
+        
+        return result
+    } else if (action === "DELETE") {
+        // removed row --> insert back
+        if (cherryPick) {
+            result.deleted = await databaseDeleteOneRowFunction({
+                data: source,
+                changedObj: changes.addedChange?.diff,
+                flattedchanged: changes.addedChange?.change,
+                auditTrail,
+                parentTrail
+            })
+        } else {
+            result.added = await databaseAddOneRowFunction({
+                data: source,
+                changedObj: changes.deletedChange?.diff,
+                flattedchanged: changes.deletedChange?.change,
+                auditTrail,
+                parentTrail,
+            })
+        }
+        return result
+    } else if (action === "UPDATE") {
+        result.updated = await databaseUpdateOneRowFunction({
+            data: source,
+            changedObj: changes.updatedChange?.diff,
+            flattedchanged: changes.updatedChange?.change,
+            addChangedObj: changes.addedChange?.diff,
+            addFlattedchanged: changes.addedChange?.change,
+            deleteChangedObj: changes.deletedChange?.diff,
+            deleteFlattedchanged: changes.deletedChange?.change,
+            revert: !cherryPick,
+            auditTrail
+        })
+        return result
+    }
+    // unknown action --> direct return data
+    result.updated = await databaseCustomFunction({
+        action: action ?? "ERROR",
+        data: source,
+        changedObj: changes.updatedChange?.diff,
+        flattedchanged: changes.updatedChange?.change,
+        addChangedObj: changes.addedChange?.diff,
+        addFlattedchanged: changes.addedChange?.change,
+        deleteChangedObj: changes.deletedChange?.diff,
+        deleteFlattedchanged: changes.deletedChange?.change,
+        revert: !cherryPick,
+        auditTrail,
+    })
+    return result
 }
 
 // revert specific commit (will create audit trail during revert)
@@ -644,49 +723,16 @@ auditTrail.prototype.revertCommit = async function ({
             changed: data,
             revert: true
         })
-        const result = {}
-        if (search?.body?.hits?.hits?.[0]?._source?.action === "CREATE") {
-            // new row --> delete
-            result.deleted = await this.databaseDeleteOneRowFunction({
-                data: search?.body?.hits?.hits?.[0]?._source,
-                changedObj: changes.addedChange?.diff,
-                flattedchanged: changes.addedChange?.change,
-                auditTrail: true,
-                parentTrail
-            })
-            return result
-        } else if (search?.body?.hits?.hits?.[0]?._source?.action === "DELETE") {
-            // removed row --> insert back
-            result.added = await this.databaseAddOneRowFunction({
-                data: search?.body?.hits?.hits?.[0]?._source,
-                changedObj: changes.deletedChange?.diff,
-                flattedchanged: changes.deletedChange?.change,
-                auditTrail: true,
-                parentTrail
-            })
-            return result
-        } else if (search?.body?.hits?.hits?.[0]?._source?.action === "UPDATE") {
-            result.updated = await this.databaseUpdateOneRowFunction({
-                data: search?.body?.hits?.hits?.[0]?._source,
-                changedObj: changes.updatedChange?.diff,
-                flattedchanged: changes.updatedChange?.change,
-                addChangedObj: changes.addedChange?.diff,
-                addFlattedchanged: changes.addedChange?.change,
-                deleteChangedObj: changes.deletedChange?.diff,
-                deleteFlattedchanged: changes.deletedChange?.change
-            })
-            return result
-        }
-        // unknown action --> direct return data
-        result.updated = await this.databaseCustomFunction({
-            action: search?.body?.hits?.hits?.[0]?._source?.action ?? "ERROR",
-            data: search?.body?.hits?.hits?.[0]?._source,
-            changedObj: changes.updatedChange?.diff,
-            flattedchanged: changes.updatedChange?.change,
-            addChangedObj: changes.addedChange?.diff,
-            addFlattedchanged: changes.addedChange?.change,
-            deleteChangedObj: changes.deletedChange?.diff,
-            deleteFlattedchanged: changes.deletedChange?.change
+        const result = await revertCommit({
+            action: search?.body?.hits?.hits?.[0]?._source?.action,
+            changes,
+            auditTrail: true,
+            source: search?.body?.hits?.hits?.[0]?._source,
+            parentTrail,
+            databaseDeleteOneRowFunction: this.databaseDeleteOneRowFunction,
+            databaseAddOneRowFunction: this.databaseAddOneRowFunction,
+            databaseUpdateOneRowFunction: this.databaseUpdateOneRowFunction,
+            databaseCustomFunction: this.databaseCustomFunction,
         })
         return result
     }
@@ -694,14 +740,12 @@ auditTrail.prototype.revertCommit = async function ({
 }
 
 // revert multiple time to checkout previous commit or switch branch
+// need compare changes to next commit --> same = won't branch out
 auditTrail.prototype.checkout = async function ({
     commitHashMap,
     commitHash,
     currentCommit,
 }) {
-    console.log("commitHashMap", commitHashMap)
-    console.log("commitHash", commitHash)
-    console.log("currentCommit", currentCommit)
     if (commitHash === currentCommit) {
         return {}
     }
@@ -710,9 +754,74 @@ auditTrail.prototype.checkout = async function ({
         commitHash,
         currentCommit,
     })
-
-
-    return result
+    const forward = (result?.forward ?? []).reverse()
+    const backward = [currentCommit, ...(result?.backward ?? [])] 
+    const _result = []
+    if (backward[backward.length - 1] !== forward[0] && forward[0] !== undefined && backward[backward.length - 1] !== undefined) {
+        //shd not happen
+        return [{
+            error: true,
+            content: "backward and forward doesn't match"
+        }]
+    } else {
+        backward.pop()
+        forward.shift()
+        const checkoutOrder = [...backward, ...forward]
+        const search = await queryElasticseaerch({
+            commitHashArray: checkoutOrder,
+            client: this.client
+        })
+        let hits = search?.body?.hits?.hits ?? []
+        hits = _.sortBy(hits, (o) => checkoutOrder.indexOf(o?._source?.commitHash))
+        for (let i = 0; i < hits.length; i++) {
+            const data = JSON.parse((hits?.[i]?._source?.change) ?? null)
+            if (data) {
+                let changes
+                if (backward.some(commitHash => commitHash === hits?.[i]?._source?.commitHash)) {
+                    changes = getChanges({
+                        changed: data,
+                        revert: true
+                    })
+                    const result = await revertCommit({
+                        action: hits?.[i]?._source?.action,
+                        changes,
+                        auditTrail: false,
+                        source: hits?.[i]?._source,
+                        databaseDeleteOneRowFunction: this.databaseDeleteOneRowFunction,
+                        databaseAddOneRowFunction: this.databaseAddOneRowFunction,
+                        databaseUpdateOneRowFunction: this.databaseUpdateOneRowFunction,
+                        databaseCustomFunction: this.databaseCustomFunction,
+                    })
+                    _result.push(result)
+                } else if (forward.some(commitHash => commitHash === hits?.[i]?._source?.commitHash)) {
+                    changes = getChanges({
+                        changed: data,
+                        revert: false
+                    })
+                    const result = await revertCommit({
+                        action: hits?.[i]?._source?.action,
+                        changes,
+                        auditTrail: false,
+                        source: hits?.[i]?._source,
+                        cherryPick: true,
+                        databaseDeleteOneRowFunction: this.databaseDeleteOneRowFunction,
+                        databaseAddOneRowFunction: this.databaseAddOneRowFunction,
+                        databaseUpdateOneRowFunction: this.databaseUpdateOneRowFunction,
+                        databaseCustomFunction: this.databaseCustomFunction,
+                    })
+                    _result.push(result)
+                } else {
+                    changes = {
+                        addedChange: {},
+                        deletedChange: {},
+                        updatedChange: {}
+                    }
+                    _result.push({})
+                }                
+            }
+        }
+    }
+    return _result
 }
 
 // pick one commit to run again
@@ -729,49 +838,17 @@ auditTrail.prototype.cherryPick = async function ({
         const changes = getChanges({
             changed: data
         })
-        const result = {}
-        if (search?.body?.hits?.hits?.[0]?._source?.action === "CREATE") {
-            result.added = await this.databaseAddOneRowFunction({
-                data: search?.body?.hits?.hits?.[0]?._source,
-                changedObj: changes.deletedChange?.diff,
-                flattedchanged: changes.deletedChange?.change,
-                auditTrail: true,
-                parentTrail
-            })
-            return result
-        } else if (search?.body?.hits?.hits?.[0]?._source?.action === "DELETE") {
-            result.deleted = await this.databaseDeleteOneRowFunction({
-                data: search?.body?.hits?.hits?.[0]?._source,
-                changedObj: changes.addedChange?.diff,
-                flattedchanged: changes.addedChange?.change,
-                auditTrail: true,
-                parentTrail
-            })
-            return result
-        } else if (search?.body?.hits?.hits?.[0]?._source?.action === "UPDATE") {
-            result.updated = await this.databaseUpdateOneRowFunction({
-                data: search?.body?.hits?.hits?.[0]?._source,
-                changedObj: changes.updatedChange?.diff,
-                flattedchanged: changes.updatedChange?.change,
-                addChangedObj: changes.addedChange?.diff,
-                addFlattedchanged: changes.addedChange?.change,
-                deleteChangedObj: changes.deletedChange?.diff,
-                deleteFlattedchanged: changes.deletedChange?.change,
-                revert: false
-            })
-            return result
-        }
-        // unknown action --> direct return data
-        result.updated = await this.databaseCustomFunction({
-            action: search?.body?.hits?.hits?.[0]?._source?.action ?? "ERROR",
-            data: search?.body?.hits?.hits?.[0]?._source,
-            changedObj: changes.updatedChange?.diff,
-            flattedchanged: changes.updatedChange?.change,
-            addChangedObj: changes.addedChange?.diff,
-            addFlattedchanged: changes.addedChange?.change,
-            deleteChangedObj: changes.deletedChange?.diff,
-            deleteFlattedchanged: changes.deletedChange?.change,
-            revert: false
+        const result = await revertCommit({
+            action: search?.body?.hits?.hits?.[0]?._source?.action,
+            changes,
+            auditTrail: true,
+            source: search?.body?.hits?.hits?.[0]?._source,
+            cherryPick: true,
+            databaseDeleteOneRowFunction: this.databaseDeleteOneRowFunction,
+            databaseAddOneRowFunction: this.databaseAddOneRowFunction,
+            databaseUpdateOneRowFunction: this.databaseUpdateOneRowFunction,
+            databaseCustomFunction: this.databaseCustomFunction,
+            parentTrail
         })
         return result
     } else {
@@ -893,7 +970,6 @@ auditTrail.prototype.appendCommitMap = function ({
                 end: levelIndexArray[i]
             }))
         }
-        console.log("levelIndexArray", levelIndexArray)
         levelIndexArray = levelIndexArray.reverse()
         const path = []
         for (let i = 0; i < levelIndexArray.length; i++) {

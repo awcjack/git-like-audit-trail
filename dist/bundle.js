@@ -2,6 +2,7 @@
 
 var _slicedToArray = require('@babel/runtime/helpers/slicedToArray');
 var _objectWithoutProperties = require('@babel/runtime/helpers/objectWithoutProperties');
+var _toConsumableArray = require('@babel/runtime/helpers/toConsumableArray');
 var _regeneratorRuntime = require('@babel/runtime/regenerator');
 var _asyncToGenerator = require('@babel/runtime/helpers/asyncToGenerator');
 var _defineProperty = require('@babel/runtime/helpers/defineProperty');
@@ -10,19 +11,18 @@ var deepObjectDiff = require('deep-object-diff');
 var elasticsearch = require('@elastic/elasticsearch');
 var uuid = require('uuid');
 var crypto = require('crypto');
-var _toConsumableArray = require('@babel/runtime/helpers/toConsumableArray');
 var _typeof = require('@babel/runtime/helpers/typeof');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var _slicedToArray__default = /*#__PURE__*/_interopDefaultLegacy(_slicedToArray);
 var _objectWithoutProperties__default = /*#__PURE__*/_interopDefaultLegacy(_objectWithoutProperties);
+var _toConsumableArray__default = /*#__PURE__*/_interopDefaultLegacy(_toConsumableArray);
 var _regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(_regeneratorRuntime);
 var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
 var _defineProperty__default = /*#__PURE__*/_interopDefaultLegacy(_defineProperty);
 var ___default = /*#__PURE__*/_interopDefaultLegacy(_);
 var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
-var _toConsumableArray__default = /*#__PURE__*/_interopDefaultLegacy(_toConsumableArray);
 var _typeof__default = /*#__PURE__*/_interopDefaultLegacy(_typeof);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -64,7 +64,7 @@ function _elasticsearchInsert() {
             return client.index({
               index: indexName,
               op_type: "create",
-              refresh: "false",
+              refresh: "true",
               body: insertdata
             });
 
@@ -424,14 +424,14 @@ function createTreeDiagramD3(_x) {
 }
 
 function _createTreeDiagramD() {
-  _createTreeDiagramD = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee9(_ref3) {
-    var commitHashMap, _ref3$index, index, _ref3$level, level, _ref3$size, size, _ref3$path, path, _ref3$onlyCurrentBran, onlyCurrentBranch, _ref3$before, before, currentCommit, getCommitInfo, ignore, format, client, result, currentIndex, commitHash, _result$body$hits$hit3, _result$body3, _result$body3$hits, _result$body3$hits$hi, _result$body3$hits$hi2, _result, info, _iterator, _step, _info2, _ignore, _info, _tmp, _i5, _Object$entries, _Object$entries$_i, key, value, targetIndex, closestIndex, child, nextTwoIndex, nextSameLevelIndex, _indexArray, _index, i, _child, _child2;
+  _createTreeDiagramD = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee11(_ref3) {
+    var commitHashMap, _ref3$index, index, _ref3$level, level, _ref3$size, size, _ref3$onlyCurrentBran, onlyCurrentBranch, _ref3$before, before, currentCommit, getCommitInfo, ignore, format, client, result, currentIndex, commitHash, _result$body$hits$hit3, _result$body3, _result$body3$hits, _result$body3$hits$hi, _result$body3$hits$hi2, _result, info, _iterator, _step, _info2, _ignore, _info, _tmp, _i5, _Object$entries, _Object$entries$_i, key, value, targetIndex, closestIndex, child, nextTwoIndex, nextSameLevelIndex, _indexArray, _index, i, _child, _child2;
 
-    return _regeneratorRuntime__default['default'].wrap(function _callee9$(_context9) {
+    return _regeneratorRuntime__default['default'].wrap(function _callee11$(_context12) {
       while (1) {
-        switch (_context9.prev = _context9.next) {
+        switch (_context12.prev = _context12.next) {
           case 0:
-            commitHashMap = _ref3.commitHashMap, _ref3$index = _ref3.index, index = _ref3$index === void 0 ? 0 : _ref3$index, _ref3$level = _ref3.level, level = _ref3$level === void 0 ? 0 : _ref3$level, _ref3$size = _ref3.size, size = _ref3$size === void 0 ? 10 : _ref3$size, _ref3$path = _ref3.path, path = _ref3$path === void 0 ? "" : _ref3$path, _ref3$onlyCurrentBran = _ref3.onlyCurrentBranch, onlyCurrentBranch = _ref3$onlyCurrentBran === void 0 ? false : _ref3$onlyCurrentBran, _ref3$before = _ref3.before, before = _ref3$before === void 0 ? 5 : _ref3$before, currentCommit = _ref3.currentCommit, getCommitInfo = _ref3.getCommitInfo, ignore = _ref3.ignore, format = _ref3.format, client = _ref3.client;
+            commitHashMap = _ref3.commitHashMap, _ref3$index = _ref3.index, index = _ref3$index === void 0 ? 0 : _ref3$index, _ref3$level = _ref3.level, level = _ref3$level === void 0 ? 0 : _ref3$level, _ref3$size = _ref3.size, size = _ref3$size === void 0 ? 10 : _ref3$size, _ref3$onlyCurrentBran = _ref3.onlyCurrentBranch, onlyCurrentBranch = _ref3$onlyCurrentBran === void 0 ? false : _ref3$onlyCurrentBran, _ref3$before = _ref3.before, before = _ref3$before === void 0 ? 5 : _ref3$before, currentCommit = _ref3.currentCommit, getCommitInfo = _ref3.getCommitInfo, ignore = _ref3.ignore, format = _ref3.format, client = _ref3.client;
             result = {};
             result.children = [];
             currentIndex = index;
@@ -443,18 +443,18 @@ function _createTreeDiagramD() {
             }
 
             if (!getCommitInfo) {
-              _context9.next = 16;
+              _context12.next = 16;
               break;
             }
 
-            _context9.next = 10;
+            _context12.next = 10;
             return queryElasticseaerch({
               commitHashArray: [commitHash],
               client: client
             });
 
           case 10:
-            _result = _context9.sent;
+            _result = _context12.sent;
             info = (_result$body$hits$hit3 = _result === null || _result === void 0 ? void 0 : (_result$body3 = _result.body) === null || _result$body3 === void 0 ? void 0 : (_result$body3$hits = _result$body3.hits) === null || _result$body3$hits === void 0 ? void 0 : (_result$body3$hits$hi = _result$body3$hits.hits) === null || _result$body3$hits$hi === void 0 ? void 0 : (_result$body3$hits$hi2 = _result$body3$hits$hi[0]) === null || _result$body3$hits$hi2 === void 0 ? void 0 : _result$body3$hits$hi2._source) !== null && _result$body$hits$hit3 !== void 0 ? _result$body$hits$hit3 : {};
             _iterator = _createForOfIteratorHelper(ignore);
 
@@ -490,18 +490,18 @@ function _createTreeDiagramD() {
             index = commitHashMap.indexOf("^".concat(level + 1, "_"), index);
 
             if (!(new RegExp('\\^[0-9]{1,}_').test(commitHashMap.substring(currentIndex + 2, index - 1)) || index === -1 || size <= 0)) {
-              _context9.next = 20;
+              _context12.next = 20;
               break;
             }
 
             // currentIndex + 2 for handling getRightmostIndexBeforeEnd case
             // if have other level between current level & next level or no next level --> current level is branch out / head --> no children --> return 
             delete result.children;
-            return _context9.abrupt("return", result);
+            return _context12.abrupt("return", result);
 
           case 20:
             if (!(onlyCurrentBranch && before > 0)) {
-              _context9.next = 28;
+              _context12.next = 28;
               break;
             }
 
@@ -509,16 +509,15 @@ function _createTreeDiagramD() {
             closestIndex = getRightmostIndexBeforeEnd({
               input: commitHashMap.substring(0, targetIndex),
               searchText: "^".concat(level + 1, "_"),
-              index: index,
+              index: index + 1,
               end: targetIndex
             });
-            _context9.next = 25;
+            _context12.next = 25;
             return createTreeDiagramD3({
               commitHashMap: commitHashMap,
               index: closestIndex,
               level: level + 1,
               size: size - 1,
-              path: path,
               onlyCurrentBranch: onlyCurrentBranch,
               before: before - 1,
               getCommitInfo: getCommitInfo,
@@ -529,9 +528,9 @@ function _createTreeDiagramD() {
             });
 
           case 25:
-            child = _context9.sent;
+            child = _context12.sent;
             result.children.push(child);
-            return _context9.abrupt("return", result);
+            return _context12.abrupt("return", result);
 
           case 28:
             // branch out checking
@@ -552,7 +551,7 @@ function _createTreeDiagramD() {
             }
 
             if (!(_indexArray.length > 1)) {
-              _context9.next = 47;
+              _context12.next = 47;
               break;
             }
 
@@ -560,17 +559,16 @@ function _createTreeDiagramD() {
 
           case 36:
             if (!(i < _indexArray.length)) {
-              _context9.next = 44;
+              _context12.next = 44;
               break;
             }
 
-            _context9.next = 39;
+            _context12.next = 39;
             return createTreeDiagramD3({
               commitHashMap: commitHashMap,
               index: _indexArray[i],
               level: level + 1,
               size: size - 1,
-              path: path,
               onlyCurrentBranch: onlyCurrentBranch,
               before: before - 1,
               getCommitInfo: getCommitInfo,
@@ -581,25 +579,24 @@ function _createTreeDiagramD() {
             });
 
           case 39:
-            _child = _context9.sent;
+            _child = _context12.sent;
             result.children.push(_child);
 
           case 41:
             i++;
-            _context9.next = 36;
+            _context12.next = 36;
             break;
 
           case 44:
-            return _context9.abrupt("return", result);
+            return _context12.abrupt("return", result);
 
           case 47:
-            _context9.next = 49;
+            _context12.next = 49;
             return createTreeDiagramD3({
               commitHashMap: commitHashMap,
               index: index,
               level: level + 1,
               size: size - 1,
-              path: path,
               onlyCurrentBranch: onlyCurrentBranch,
               before: before - 1,
               getCommitInfo: getCommitInfo,
@@ -610,16 +607,16 @@ function _createTreeDiagramD() {
             });
 
           case 49:
-            _child2 = _context9.sent;
+            _child2 = _context12.sent;
             result.children.push(_child2);
-            return _context9.abrupt("return", result);
+            return _context12.abrupt("return", result);
 
           case 52:
           case "end":
-            return _context9.stop();
+            return _context12.stop();
         }
       }
-    }, _callee9);
+    }, _callee11);
   }));
   return _createTreeDiagramD.apply(this, arguments);
 }
@@ -629,14 +626,14 @@ function queryElasticseaerch(_x2) {
 }
 
 function _queryElasticseaerch() {
-  _queryElasticseaerch = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee10(_ref4) {
+  _queryElasticseaerch = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee12(_ref4) {
     var commitHashArray, client, result;
-    return _regeneratorRuntime__default['default'].wrap(function _callee10$(_context10) {
+    return _regeneratorRuntime__default['default'].wrap(function _callee12$(_context13) {
       while (1) {
-        switch (_context10.prev = _context10.next) {
+        switch (_context13.prev = _context13.next) {
           case 0:
             commitHashArray = _ref4.commitHashArray, client = _ref4.client;
-            _context10.next = 3;
+            _context13.next = 3;
             return elasticsearchSearch({
               commitHashArray: commitHashArray,
               size: commitHashArray.length,
@@ -644,15 +641,15 @@ function _queryElasticseaerch() {
             });
 
           case 3:
-            result = _context10.sent;
-            return _context10.abrupt("return", result);
+            result = _context13.sent;
+            return _context13.abrupt("return", result);
 
           case 5:
           case "end":
-            return _context10.stop();
+            return _context13.stop();
         }
       }
-    }, _callee10);
+    }, _callee12);
   }));
   return _queryElasticseaerch.apply(this, arguments);
 }
@@ -686,12 +683,12 @@ function getCommitHashInfo(_x3) {
 }
 
 function _getCommitHashInfo() {
-  _getCommitHashInfo = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee11(_ref6) {
+  _getCommitHashInfo = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee13(_ref6) {
     var input, client, currentCommit, result, inputKeys, i, info, _tmp, _info$body, _info$body$hits, _info$body$hits$hits, _info$body$hits$hits$, _info$body2, _info$body2$hits, _info$body2$hits$hits, _info$body2$hits$hits2;
 
-    return _regeneratorRuntime__default['default'].wrap(function _callee11$(_context11) {
+    return _regeneratorRuntime__default['default'].wrap(function _callee13$(_context14) {
       while (1) {
-        switch (_context11.prev = _context11.next) {
+        switch (_context14.prev = _context14.next) {
           case 0:
             input = _ref6.input, client = _ref6.client, currentCommit = _ref6.currentCommit;
             result = {};
@@ -700,19 +697,19 @@ function _getCommitHashInfo() {
 
           case 4:
             if (!(i < inputKeys.length)) {
-              _context11.next = 15;
+              _context14.next = 15;
               break;
             }
 
-            _context11.next = 7;
+            _context14.next = 7;
             return queryElasticseaerch({
               commitHashArray: [inputKeys[i]],
               client: client
             });
 
           case 7:
-            info = _context11.sent;
-            _context11.next = 10;
+            info = _context14.sent;
+            _context14.next = 10;
             return getCommitHashInfo({
               input: input[inputKeys[i]],
               client: client,
@@ -720,7 +717,7 @@ function _getCommitHashInfo() {
             });
 
           case 10:
-            _tmp = _context11.sent;
+            _tmp = _context14.sent;
 
             if (currentCommit === inputKeys[i]) {
               result[inputKeys[i]] = _objectSpread$1(_objectSpread$1({}, _tmp), {}, {
@@ -735,23 +732,25 @@ function _getCommitHashInfo() {
 
           case 12:
             i++;
-            _context11.next = 4;
+            _context14.next = 4;
             break;
 
           case 15:
-            return _context11.abrupt("return", result);
+            return _context14.abrupt("return", result);
 
           case 16:
           case "end":
-            return _context11.stop();
+            return _context14.stop();
         }
       }
-    }, _callee11);
+    }, _callee13);
   }));
   return _getCommitHashInfo.apply(this, arguments);
 }
 
 function getChanges(_ref7) {
+  var _changed$added, _changed$deleted;
+
   var _ref7$changed = _ref7.changed,
       changed = _ref7$changed === void 0 ? {
     added: {},
@@ -759,14 +758,18 @@ function getChanges(_ref7) {
     updated: {}
   } : _ref7$changed,
       revert = _ref7.revert;
-  var addedChange = diffParser(changed.added, "after");
-  var deletedChange = diffParser(changed.deleted, "before");
+  var addedChange = diffParser((_changed$added = changed.added) !== null && _changed$added !== void 0 ? _changed$added : {}, "after");
+  var deletedChange = diffParser((_changed$deleted = changed.deleted) !== null && _changed$deleted !== void 0 ? _changed$deleted : {}, "before");
   var updatedChange;
 
   if (revert) {
-    updatedChange = diffParser(changed.updated, "before");
+    var _changed$updated;
+
+    updatedChange = diffParser((_changed$updated = changed.updated) !== null && _changed$updated !== void 0 ? _changed$updated : {}, "before");
   } else {
-    updatedChange = diffParser(changed.updated, "after");
+    var _changed$updated2;
+
+    updatedChange = diffParser((_changed$updated2 = changed.updated) !== null && _changed$updated2 !== void 0 ? _changed$updated2 : {}, "after");
   }
 
   return {
@@ -1137,7 +1140,7 @@ auditTrail.prototype.queryD3 = /*#__PURE__*/function () {
             } else {
               index = getRightmostIndexBeforeEnd({
                 input: commitHashMap.substring(0, currentIndex),
-                searchText: "^".concat(currentIndex - before, "_"),
+                searchText: "^".concat(currentLevel - before, "_"),
                 end: currentIndex
               });
               startingIndexArray = [index];
@@ -1152,7 +1155,7 @@ auditTrail.prototype.queryD3 = /*#__PURE__*/function () {
               break;
             }
 
-            startingIndex = startingIndexArray[j];
+            startingIndex = startingIndexArray[j] !== -1 ? startingIndexArray[j] : currentIndex;
             realStart = currentLevel - before > 0 ? currentLevel - before : 0; // create tree diagram with starting node starting level (current level - before level)
 
             _context4.next = 17;
@@ -1160,8 +1163,7 @@ auditTrail.prototype.queryD3 = /*#__PURE__*/function () {
               commitHashMap: commitHashMap,
               index: startingIndex,
               level: realStart,
-              size: before + after,
-              path: "",
+              size: currentLevel - before > 0 ? before + after : currentLevel + after,
               onlyCurrentBranch: onlyCurrentBranch,
               before: before > currentLevel ? currentLevel : before,
               currentCommit: commitHash,
@@ -1194,20 +1196,170 @@ auditTrail.prototype.queryD3 = /*#__PURE__*/function () {
   return function (_x7) {
     return _ref16.apply(this, arguments);
   };
-}(); // revert specific commit (will create audit trail during revert)
+}();
 
+function revertCommit(_x8) {
+  return _revertCommit.apply(this, arguments);
+} // revert specific commit (will create audit trail during revert)
+
+
+function _revertCommit() {
+  _revertCommit = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee14(_ref17) {
+    var _changes$updatedChang3, _changes$updatedChang4, _changes$addedChange7, _changes$addedChange8, _changes$deletedChang7, _changes$deletedChang8;
+
+    var action, changes, _ref17$auditTrail, auditTrail, source, parentTrail, _ref17$cherryPick, cherryPick, databaseDeleteOneRowFunction, databaseAddOneRowFunction, databaseUpdateOneRowFunction, databaseCustomFunction, result, _changes$deletedChang, _changes$deletedChang2, _changes$addedChange, _changes$addedChange2, _changes$addedChange3, _changes$addedChange4, _changes$deletedChang3, _changes$deletedChang4, _changes$updatedChang, _changes$updatedChang2, _changes$addedChange5, _changes$addedChange6, _changes$deletedChang5, _changes$deletedChang6;
+
+    return _regeneratorRuntime__default['default'].wrap(function _callee14$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            action = _ref17.action, changes = _ref17.changes, _ref17$auditTrail = _ref17.auditTrail, auditTrail = _ref17$auditTrail === void 0 ? true : _ref17$auditTrail, source = _ref17.source, parentTrail = _ref17.parentTrail, _ref17$cherryPick = _ref17.cherryPick, cherryPick = _ref17$cherryPick === void 0 ? false : _ref17$cherryPick, databaseDeleteOneRowFunction = _ref17.databaseDeleteOneRowFunction, databaseAddOneRowFunction = _ref17.databaseAddOneRowFunction, databaseUpdateOneRowFunction = _ref17.databaseUpdateOneRowFunction, databaseCustomFunction = _ref17.databaseCustomFunction;
+            result = {};
+
+            if (!(action === "CREATE")) {
+              _context15.next = 15;
+              break;
+            }
+
+            if (!cherryPick) {
+              _context15.next = 9;
+              break;
+            }
+
+            _context15.next = 6;
+            return databaseAddOneRowFunction({
+              data: source,
+              changedObj: (_changes$deletedChang = changes.deletedChange) === null || _changes$deletedChang === void 0 ? void 0 : _changes$deletedChang.diff,
+              flattedchanged: (_changes$deletedChang2 = changes.deletedChange) === null || _changes$deletedChang2 === void 0 ? void 0 : _changes$deletedChang2.change,
+              auditTrail: auditTrail,
+              parentTrail: parentTrail
+            });
+
+          case 6:
+            result.added = _context15.sent;
+            _context15.next = 12;
+            break;
+
+          case 9:
+            _context15.next = 11;
+            return databaseDeleteOneRowFunction({
+              data: source,
+              changedObj: (_changes$addedChange = changes.addedChange) === null || _changes$addedChange === void 0 ? void 0 : _changes$addedChange.diff,
+              flattedchanged: (_changes$addedChange2 = changes.addedChange) === null || _changes$addedChange2 === void 0 ? void 0 : _changes$addedChange2.change,
+              auditTrail: auditTrail,
+              parentTrail: parentTrail
+            });
+
+          case 11:
+            result.deleted = _context15.sent;
+
+          case 12:
+            return _context15.abrupt("return", result);
+
+          case 15:
+            if (!(action === "DELETE")) {
+              _context15.next = 28;
+              break;
+            }
+
+            if (!cherryPick) {
+              _context15.next = 22;
+              break;
+            }
+
+            _context15.next = 19;
+            return databaseDeleteOneRowFunction({
+              data: source,
+              changedObj: (_changes$addedChange3 = changes.addedChange) === null || _changes$addedChange3 === void 0 ? void 0 : _changes$addedChange3.diff,
+              flattedchanged: (_changes$addedChange4 = changes.addedChange) === null || _changes$addedChange4 === void 0 ? void 0 : _changes$addedChange4.change,
+              auditTrail: auditTrail,
+              parentTrail: parentTrail
+            });
+
+          case 19:
+            result.deleted = _context15.sent;
+            _context15.next = 25;
+            break;
+
+          case 22:
+            _context15.next = 24;
+            return databaseAddOneRowFunction({
+              data: source,
+              changedObj: (_changes$deletedChang3 = changes.deletedChange) === null || _changes$deletedChang3 === void 0 ? void 0 : _changes$deletedChang3.diff,
+              flattedchanged: (_changes$deletedChang4 = changes.deletedChange) === null || _changes$deletedChang4 === void 0 ? void 0 : _changes$deletedChang4.change,
+              auditTrail: auditTrail,
+              parentTrail: parentTrail
+            });
+
+          case 24:
+            result.added = _context15.sent;
+
+          case 25:
+            return _context15.abrupt("return", result);
+
+          case 28:
+            if (!(action === "UPDATE")) {
+              _context15.next = 33;
+              break;
+            }
+
+            _context15.next = 31;
+            return databaseUpdateOneRowFunction({
+              data: source,
+              changedObj: (_changes$updatedChang = changes.updatedChange) === null || _changes$updatedChang === void 0 ? void 0 : _changes$updatedChang.diff,
+              flattedchanged: (_changes$updatedChang2 = changes.updatedChange) === null || _changes$updatedChang2 === void 0 ? void 0 : _changes$updatedChang2.change,
+              addChangedObj: (_changes$addedChange5 = changes.addedChange) === null || _changes$addedChange5 === void 0 ? void 0 : _changes$addedChange5.diff,
+              addFlattedchanged: (_changes$addedChange6 = changes.addedChange) === null || _changes$addedChange6 === void 0 ? void 0 : _changes$addedChange6.change,
+              deleteChangedObj: (_changes$deletedChang5 = changes.deletedChange) === null || _changes$deletedChang5 === void 0 ? void 0 : _changes$deletedChang5.diff,
+              deleteFlattedchanged: (_changes$deletedChang6 = changes.deletedChange) === null || _changes$deletedChang6 === void 0 ? void 0 : _changes$deletedChang6.change,
+              revert: !cherryPick,
+              auditTrail: auditTrail
+            });
+
+          case 31:
+            result.updated = _context15.sent;
+            return _context15.abrupt("return", result);
+
+          case 33:
+            _context15.next = 35;
+            return databaseCustomFunction({
+              action: action !== null && action !== void 0 ? action : "ERROR",
+              data: source,
+              changedObj: (_changes$updatedChang3 = changes.updatedChange) === null || _changes$updatedChang3 === void 0 ? void 0 : _changes$updatedChang3.diff,
+              flattedchanged: (_changes$updatedChang4 = changes.updatedChange) === null || _changes$updatedChang4 === void 0 ? void 0 : _changes$updatedChang4.change,
+              addChangedObj: (_changes$addedChange7 = changes.addedChange) === null || _changes$addedChange7 === void 0 ? void 0 : _changes$addedChange7.diff,
+              addFlattedchanged: (_changes$addedChange8 = changes.addedChange) === null || _changes$addedChange8 === void 0 ? void 0 : _changes$addedChange8.change,
+              deleteChangedObj: (_changes$deletedChang7 = changes.deletedChange) === null || _changes$deletedChang7 === void 0 ? void 0 : _changes$deletedChang7.diff,
+              deleteFlattedchanged: (_changes$deletedChang8 = changes.deletedChange) === null || _changes$deletedChang8 === void 0 ? void 0 : _changes$deletedChang8.change,
+              revert: !cherryPick,
+              auditTrail: auditTrail
+            });
+
+          case 35:
+            result.updated = _context15.sent;
+            return _context15.abrupt("return", result);
+
+          case 37:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee14);
+  }));
+  return _revertCommit.apply(this, arguments);
+}
 
 auditTrail.prototype.revertCommit = /*#__PURE__*/function () {
-  var _ref18 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee5(_ref17) {
+  var _ref19 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee5(_ref18) {
     var _search$body$hits$hit, _search$body, _search$body$hits, _search$body$hits$hit2, _search$body$hits$hit3, _search$body$hits$hit4;
 
-    var commitHash, parentTrail, search, data, _search$body2, _search$body2$hits, _search$body2$hits$hi, _search$body2$hits$hi2, _search$body2$hits$hi3, _search$body4, _search$body4$hits, _search$body4$hits$hi, _search$body4$hits$hi2, _search$body4$hits$hi3, _search$body6, _search$body6$hits, _search$body6$hits$hi, _search$body6$hits$hi2, _search$body6$hits$hi3, _search$body$hits$hit5, _search$body8, _search$body8$hits, _search$body8$hits$hi, _search$body8$hits$hi2, _search$body8$hits$hi3, _search$body9, _search$body9$hits, _search$body9$hits$hi, _search$body9$hits$hi2, _changes$updatedChang3, _changes$updatedChang4, _changes$addedChange5, _changes$addedChange6, _changes$deletedChang5, _changes$deletedChang6, changes, result, _search$body3, _search$body3$hits, _search$body3$hits$hi, _search$body3$hits$hi2, _changes$addedChange, _changes$addedChange2, _search$body5, _search$body5$hits, _search$body5$hits$hi, _search$body5$hits$hi2, _changes$deletedChang, _changes$deletedChang2, _search$body7, _search$body7$hits, _search$body7$hits$hi, _search$body7$hits$hi2, _changes$updatedChang, _changes$updatedChang2, _changes$addedChange3, _changes$addedChange4, _changes$deletedChang3, _changes$deletedChang4;
+    var commitHash, parentTrail, search, data, _search$body2, _search$body2$hits, _search$body2$hits$hi, _search$body2$hits$hi2, _search$body2$hits$hi3, _search$body3, _search$body3$hits, _search$body3$hits$hi, _search$body3$hits$hi2, changes, result;
 
     return _regeneratorRuntime__default['default'].wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            commitHash = _ref17.commitHash, parentTrail = _ref17.parentTrail;
+            commitHash = _ref18.commitHash, parentTrail = _ref18.parentTrail;
             _context5.next = 3;
             return queryElasticseaerch({
               commitHashArray: [commitHash],
@@ -1219,7 +1371,7 @@ auditTrail.prototype.revertCommit = /*#__PURE__*/function () {
             data = JSON.parse((_search$body$hits$hit = search === null || search === void 0 ? void 0 : (_search$body = search.body) === null || _search$body === void 0 ? void 0 : (_search$body$hits = _search$body.hits) === null || _search$body$hits === void 0 ? void 0 : (_search$body$hits$hit2 = _search$body$hits.hits) === null || _search$body$hits$hit2 === void 0 ? void 0 : (_search$body$hits$hit3 = _search$body$hits$hit2[0]) === null || _search$body$hits$hit3 === void 0 ? void 0 : (_search$body$hits$hit4 = _search$body$hits$hit3._source) === null || _search$body$hits$hit4 === void 0 ? void 0 : _search$body$hits$hit4.change) !== null && _search$body$hits$hit !== void 0 ? _search$body$hits$hit : null);
 
             if (!data) {
-              _context5.next = 31;
+              _context5.next = 11;
               break;
             }
 
@@ -1227,87 +1379,27 @@ auditTrail.prototype.revertCommit = /*#__PURE__*/function () {
               changed: data,
               revert: true
             });
-            result = {};
-
-            if (!((search === null || search === void 0 ? void 0 : (_search$body2 = search.body) === null || _search$body2 === void 0 ? void 0 : (_search$body2$hits = _search$body2.hits) === null || _search$body2$hits === void 0 ? void 0 : (_search$body2$hits$hi = _search$body2$hits.hits) === null || _search$body2$hits$hi === void 0 ? void 0 : (_search$body2$hits$hi2 = _search$body2$hits$hi[0]) === null || _search$body2$hits$hi2 === void 0 ? void 0 : (_search$body2$hits$hi3 = _search$body2$hits$hi2._source) === null || _search$body2$hits$hi3 === void 0 ? void 0 : _search$body2$hits$hi3.action) === "CREATE")) {
-              _context5.next = 15;
-              break;
-            }
-
-            _context5.next = 11;
-            return this.databaseDeleteOneRowFunction({
-              data: search === null || search === void 0 ? void 0 : (_search$body3 = search.body) === null || _search$body3 === void 0 ? void 0 : (_search$body3$hits = _search$body3.hits) === null || _search$body3$hits === void 0 ? void 0 : (_search$body3$hits$hi = _search$body3$hits.hits) === null || _search$body3$hits$hi === void 0 ? void 0 : (_search$body3$hits$hi2 = _search$body3$hits$hi[0]) === null || _search$body3$hits$hi2 === void 0 ? void 0 : _search$body3$hits$hi2._source,
-              changedObj: (_changes$addedChange = changes.addedChange) === null || _changes$addedChange === void 0 ? void 0 : _changes$addedChange.diff,
-              flattedchanged: (_changes$addedChange2 = changes.addedChange) === null || _changes$addedChange2 === void 0 ? void 0 : _changes$addedChange2.change,
+            _context5.next = 9;
+            return revertCommit({
+              action: search === null || search === void 0 ? void 0 : (_search$body2 = search.body) === null || _search$body2 === void 0 ? void 0 : (_search$body2$hits = _search$body2.hits) === null || _search$body2$hits === void 0 ? void 0 : (_search$body2$hits$hi = _search$body2$hits.hits) === null || _search$body2$hits$hi === void 0 ? void 0 : (_search$body2$hits$hi2 = _search$body2$hits$hi[0]) === null || _search$body2$hits$hi2 === void 0 ? void 0 : (_search$body2$hits$hi3 = _search$body2$hits$hi2._source) === null || _search$body2$hits$hi3 === void 0 ? void 0 : _search$body2$hits$hi3.action,
+              changes: changes,
               auditTrail: true,
-              parentTrail: parentTrail
+              source: search === null || search === void 0 ? void 0 : (_search$body3 = search.body) === null || _search$body3 === void 0 ? void 0 : (_search$body3$hits = _search$body3.hits) === null || _search$body3$hits === void 0 ? void 0 : (_search$body3$hits$hi = _search$body3$hits.hits) === null || _search$body3$hits$hi === void 0 ? void 0 : (_search$body3$hits$hi2 = _search$body3$hits$hi[0]) === null || _search$body3$hits$hi2 === void 0 ? void 0 : _search$body3$hits$hi2._source,
+              parentTrail: parentTrail,
+              databaseDeleteOneRowFunction: this.databaseDeleteOneRowFunction,
+              databaseAddOneRowFunction: this.databaseAddOneRowFunction,
+              databaseUpdateOneRowFunction: this.databaseUpdateOneRowFunction,
+              databaseCustomFunction: this.databaseCustomFunction
             });
+
+          case 9:
+            result = _context5.sent;
+            return _context5.abrupt("return", result);
 
           case 11:
-            result.deleted = _context5.sent;
-            return _context5.abrupt("return", result);
-
-          case 15:
-            if (!((search === null || search === void 0 ? void 0 : (_search$body4 = search.body) === null || _search$body4 === void 0 ? void 0 : (_search$body4$hits = _search$body4.hits) === null || _search$body4$hits === void 0 ? void 0 : (_search$body4$hits$hi = _search$body4$hits.hits) === null || _search$body4$hits$hi === void 0 ? void 0 : (_search$body4$hits$hi2 = _search$body4$hits$hi[0]) === null || _search$body4$hits$hi2 === void 0 ? void 0 : (_search$body4$hits$hi3 = _search$body4$hits$hi2._source) === null || _search$body4$hits$hi3 === void 0 ? void 0 : _search$body4$hits$hi3.action) === "DELETE")) {
-              _context5.next = 22;
-              break;
-            }
-
-            _context5.next = 18;
-            return this.databaseAddOneRowFunction({
-              data: search === null || search === void 0 ? void 0 : (_search$body5 = search.body) === null || _search$body5 === void 0 ? void 0 : (_search$body5$hits = _search$body5.hits) === null || _search$body5$hits === void 0 ? void 0 : (_search$body5$hits$hi = _search$body5$hits.hits) === null || _search$body5$hits$hi === void 0 ? void 0 : (_search$body5$hits$hi2 = _search$body5$hits$hi[0]) === null || _search$body5$hits$hi2 === void 0 ? void 0 : _search$body5$hits$hi2._source,
-              changedObj: (_changes$deletedChang = changes.deletedChange) === null || _changes$deletedChang === void 0 ? void 0 : _changes$deletedChang.diff,
-              flattedchanged: (_changes$deletedChang2 = changes.deletedChange) === null || _changes$deletedChang2 === void 0 ? void 0 : _changes$deletedChang2.change,
-              auditTrail: true,
-              parentTrail: parentTrail
-            });
-
-          case 18:
-            result.added = _context5.sent;
-            return _context5.abrupt("return", result);
-
-          case 22:
-            if (!((search === null || search === void 0 ? void 0 : (_search$body6 = search.body) === null || _search$body6 === void 0 ? void 0 : (_search$body6$hits = _search$body6.hits) === null || _search$body6$hits === void 0 ? void 0 : (_search$body6$hits$hi = _search$body6$hits.hits) === null || _search$body6$hits$hi === void 0 ? void 0 : (_search$body6$hits$hi2 = _search$body6$hits$hi[0]) === null || _search$body6$hits$hi2 === void 0 ? void 0 : (_search$body6$hits$hi3 = _search$body6$hits$hi2._source) === null || _search$body6$hits$hi3 === void 0 ? void 0 : _search$body6$hits$hi3.action) === "UPDATE")) {
-              _context5.next = 27;
-              break;
-            }
-
-            _context5.next = 25;
-            return this.databaseUpdateOneRowFunction({
-              data: search === null || search === void 0 ? void 0 : (_search$body7 = search.body) === null || _search$body7 === void 0 ? void 0 : (_search$body7$hits = _search$body7.hits) === null || _search$body7$hits === void 0 ? void 0 : (_search$body7$hits$hi = _search$body7$hits.hits) === null || _search$body7$hits$hi === void 0 ? void 0 : (_search$body7$hits$hi2 = _search$body7$hits$hi[0]) === null || _search$body7$hits$hi2 === void 0 ? void 0 : _search$body7$hits$hi2._source,
-              changedObj: (_changes$updatedChang = changes.updatedChange) === null || _changes$updatedChang === void 0 ? void 0 : _changes$updatedChang.diff,
-              flattedchanged: (_changes$updatedChang2 = changes.updatedChange) === null || _changes$updatedChang2 === void 0 ? void 0 : _changes$updatedChang2.change,
-              addChangedObj: (_changes$addedChange3 = changes.addedChange) === null || _changes$addedChange3 === void 0 ? void 0 : _changes$addedChange3.diff,
-              addFlattedchanged: (_changes$addedChange4 = changes.addedChange) === null || _changes$addedChange4 === void 0 ? void 0 : _changes$addedChange4.change,
-              deleteChangedObj: (_changes$deletedChang3 = changes.deletedChange) === null || _changes$deletedChang3 === void 0 ? void 0 : _changes$deletedChang3.diff,
-              deleteFlattedchanged: (_changes$deletedChang4 = changes.deletedChange) === null || _changes$deletedChang4 === void 0 ? void 0 : _changes$deletedChang4.change
-            });
-
-          case 25:
-            result.updated = _context5.sent;
-            return _context5.abrupt("return", result);
-
-          case 27:
-            _context5.next = 29;
-            return this.databaseCustomFunction({
-              action: (_search$body$hits$hit5 = search === null || search === void 0 ? void 0 : (_search$body8 = search.body) === null || _search$body8 === void 0 ? void 0 : (_search$body8$hits = _search$body8.hits) === null || _search$body8$hits === void 0 ? void 0 : (_search$body8$hits$hi = _search$body8$hits.hits) === null || _search$body8$hits$hi === void 0 ? void 0 : (_search$body8$hits$hi2 = _search$body8$hits$hi[0]) === null || _search$body8$hits$hi2 === void 0 ? void 0 : (_search$body8$hits$hi3 = _search$body8$hits$hi2._source) === null || _search$body8$hits$hi3 === void 0 ? void 0 : _search$body8$hits$hi3.action) !== null && _search$body$hits$hit5 !== void 0 ? _search$body$hits$hit5 : "ERROR",
-              data: search === null || search === void 0 ? void 0 : (_search$body9 = search.body) === null || _search$body9 === void 0 ? void 0 : (_search$body9$hits = _search$body9.hits) === null || _search$body9$hits === void 0 ? void 0 : (_search$body9$hits$hi = _search$body9$hits.hits) === null || _search$body9$hits$hi === void 0 ? void 0 : (_search$body9$hits$hi2 = _search$body9$hits$hi[0]) === null || _search$body9$hits$hi2 === void 0 ? void 0 : _search$body9$hits$hi2._source,
-              changedObj: (_changes$updatedChang3 = changes.updatedChange) === null || _changes$updatedChang3 === void 0 ? void 0 : _changes$updatedChang3.diff,
-              flattedchanged: (_changes$updatedChang4 = changes.updatedChange) === null || _changes$updatedChang4 === void 0 ? void 0 : _changes$updatedChang4.change,
-              addChangedObj: (_changes$addedChange5 = changes.addedChange) === null || _changes$addedChange5 === void 0 ? void 0 : _changes$addedChange5.diff,
-              addFlattedchanged: (_changes$addedChange6 = changes.addedChange) === null || _changes$addedChange6 === void 0 ? void 0 : _changes$addedChange6.change,
-              deleteChangedObj: (_changes$deletedChang5 = changes.deletedChange) === null || _changes$deletedChang5 === void 0 ? void 0 : _changes$deletedChang5.diff,
-              deleteFlattedchanged: (_changes$deletedChang6 = changes.deletedChange) === null || _changes$deletedChang6 === void 0 ? void 0 : _changes$deletedChang6.change
-            });
-
-          case 29:
-            result.updated = _context5.sent;
-            return _context5.abrupt("return", result);
-
-          case 31:
             return _context5.abrupt("return", null);
 
-          case 32:
+          case 12:
           case "end":
             return _context5.stop();
         }
@@ -1315,30 +1407,36 @@ auditTrail.prototype.revertCommit = /*#__PURE__*/function () {
     }, _callee5, this);
   }));
 
-  return function (_x8) {
-    return _ref18.apply(this, arguments);
+  return function (_x9) {
+    return _ref19.apply(this, arguments);
   };
 }(); // revert multiple time to checkout previous commit or switch branch
+// need compare changes to next commit --> same = won't branch out
 
 
 auditTrail.prototype.checkout = /*#__PURE__*/function () {
-  var _ref20 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee6(_ref19) {
-    var commitHashMap, commitHash, currentCommit, result;
-    return _regeneratorRuntime__default['default'].wrap(function _callee6$(_context6) {
+  var _ref21 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee7(_ref20) {
+    var _result$forward,
+        _result$backward,
+        _this = this;
+
+    var commitHashMap, commitHash, currentCommit, result, forward, backward, _result;
+
+    return _regeneratorRuntime__default['default'].wrap(function _callee7$(_context8) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context8.prev = _context8.next) {
           case 0:
-            commitHashMap = _ref19.commitHashMap, commitHash = _ref19.commitHash, currentCommit = _ref19.currentCommit;
+            commitHashMap = _ref20.commitHashMap, commitHash = _ref20.commitHash, currentCommit = _ref20.currentCommit;
             console.log("commitHashMap", commitHashMap);
             console.log("commitHash", commitHash);
             console.log("currentCommit", currentCommit);
 
             if (!(commitHash === currentCommit)) {
-              _context6.next = 6;
+              _context8.next = 6;
               break;
             }
 
-            return _context6.abrupt("return", {});
+            return _context8.abrupt("return", {});
 
           case 6:
             result = getShortestPath({
@@ -1346,156 +1444,315 @@ auditTrail.prototype.checkout = /*#__PURE__*/function () {
               commitHash: commitHash,
               currentCommit: currentCommit
             });
-            return _context6.abrupt("return", result);
+            console.log("result", result);
+            forward = ((_result$forward = result === null || result === void 0 ? void 0 : result.forward) !== null && _result$forward !== void 0 ? _result$forward : []).reverse();
+            backward = [currentCommit].concat(_toConsumableArray__default['default']((_result$backward = result === null || result === void 0 ? void 0 : result.backward) !== null && _result$backward !== void 0 ? _result$backward : []));
+            _result = [];
 
-          case 8:
+            if (!(backward[backward.length - 1] !== forward[0] && forward[0] !== undefined && backward[backward.length - 1] !== undefined)) {
+              _context8.next = 15;
+              break;
+            }
+
+            return _context8.abrupt("return", [{
+              error: true,
+              content: "backward and forward doesn't match"
+            }]);
+
+          case 15:
+            return _context8.delegateYield( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee6() {
+              var _search$body$hits$hit5, _search$body4, _search$body4$hits;
+
+              var checkoutOrder, search, hits, _loop, i;
+
+              return _regeneratorRuntime__default['default'].wrap(function _callee6$(_context7) {
+                while (1) {
+                  switch (_context7.prev = _context7.next) {
+                    case 0:
+                      backward.pop();
+                      forward.shift();
+                      console.log("[currentCommit, ...backward, ...forward]", [].concat(_toConsumableArray__default['default'](backward), _toConsumableArray__default['default'](forward)));
+                      checkoutOrder = [].concat(_toConsumableArray__default['default'](backward), _toConsumableArray__default['default'](forward));
+                      _context7.next = 6;
+                      return queryElasticseaerch({
+                        commitHashArray: checkoutOrder,
+                        client: _this.client
+                      });
+
+                    case 6:
+                      search = _context7.sent;
+                      console.log("search", search);
+                      hits = (_search$body$hits$hit5 = search === null || search === void 0 ? void 0 : (_search$body4 = search.body) === null || _search$body4 === void 0 ? void 0 : (_search$body4$hits = _search$body4.hits) === null || _search$body4$hits === void 0 ? void 0 : _search$body4$hits.hits) !== null && _search$body$hits$hit5 !== void 0 ? _search$body$hits$hit5 : [];
+                      console.log("hits", hits);
+                      hits = ___default['default'].sortBy(hits, function (o) {
+                        var _o$_source;
+
+                        return checkoutOrder.indexOf(o === null || o === void 0 ? void 0 : (_o$_source = o._source) === null || _o$_source === void 0 ? void 0 : _o$_source.commitHash);
+                      });
+                      console.log("hits", hits);
+                      _loop = /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _loop(i) {
+                        var _hits$i$_source$chang, _hits, _hits$i, _hits$i$_source;
+
+                        var data, changes, _hits3, _hits3$i, _hits3$i$_source, _hits4, _hits4$i, _result5, _hits6, _hits6$i, _hits6$i$_source, _hits7, _hits7$i, _result6;
+
+                        return _regeneratorRuntime__default['default'].wrap(function _loop$(_context6) {
+                          while (1) {
+                            switch (_context6.prev = _context6.next) {
+                              case 0:
+                                console.log("i", i);
+                                data = JSON.parse((_hits$i$_source$chang = (_hits = hits) === null || _hits === void 0 ? void 0 : (_hits$i = _hits[i]) === null || _hits$i === void 0 ? void 0 : (_hits$i$_source = _hits$i._source) === null || _hits$i$_source === void 0 ? void 0 : _hits$i$_source.change) !== null && _hits$i$_source$chang !== void 0 ? _hits$i$_source$chang : null);
+
+                                if (!data) {
+                                  _context6.next = 25;
+                                  break;
+                                }
+
+                                console.log("data", data);
+
+                                if (!backward.some(function (commitHash) {
+                                  var _hits2, _hits2$i, _hits2$i$_source;
+
+                                  return commitHash === ((_hits2 = hits) === null || _hits2 === void 0 ? void 0 : (_hits2$i = _hits2[i]) === null || _hits2$i === void 0 ? void 0 : (_hits2$i$_source = _hits2$i._source) === null || _hits2$i$_source === void 0 ? void 0 : _hits2$i$_source.commitHash);
+                                })) {
+                                  _context6.next = 15;
+                                  break;
+                                }
+
+                                console.log("backward");
+                                changes = getChanges({
+                                  changed: data,
+                                  revert: true
+                                });
+                                console.log("changes", changes);
+                                _context6.next = 10;
+                                return revertCommit({
+                                  action: (_hits3 = hits) === null || _hits3 === void 0 ? void 0 : (_hits3$i = _hits3[i]) === null || _hits3$i === void 0 ? void 0 : (_hits3$i$_source = _hits3$i._source) === null || _hits3$i$_source === void 0 ? void 0 : _hits3$i$_source.action,
+                                  changes: changes,
+                                  auditTrail: false,
+                                  source: (_hits4 = hits) === null || _hits4 === void 0 ? void 0 : (_hits4$i = _hits4[i]) === null || _hits4$i === void 0 ? void 0 : _hits4$i._source,
+                                  databaseDeleteOneRowFunction: _this.databaseDeleteOneRowFunction,
+                                  databaseAddOneRowFunction: _this.databaseAddOneRowFunction,
+                                  databaseUpdateOneRowFunction: _this.databaseUpdateOneRowFunction,
+                                  databaseCustomFunction: _this.databaseCustomFunction
+                                });
+
+                              case 10:
+                                _result5 = _context6.sent;
+                                console.log("result", _result5);
+
+                                _result.push(_result5);
+
+                                _context6.next = 25;
+                                break;
+
+                              case 15:
+                                if (!forward.some(function (commitHash) {
+                                  var _hits5, _hits5$i, _hits5$i$_source;
+
+                                  return commitHash === ((_hits5 = hits) === null || _hits5 === void 0 ? void 0 : (_hits5$i = _hits5[i]) === null || _hits5$i === void 0 ? void 0 : (_hits5$i$_source = _hits5$i._source) === null || _hits5$i$_source === void 0 ? void 0 : _hits5$i$_source.commitHash);
+                                })) {
+                                  _context6.next = 23;
+                                  break;
+                                }
+
+                                changes = getChanges({
+                                  changed: data,
+                                  revert: false
+                                });
+                                _context6.next = 19;
+                                return revertCommit({
+                                  action: (_hits6 = hits) === null || _hits6 === void 0 ? void 0 : (_hits6$i = _hits6[i]) === null || _hits6$i === void 0 ? void 0 : (_hits6$i$_source = _hits6$i._source) === null || _hits6$i$_source === void 0 ? void 0 : _hits6$i$_source.action,
+                                  changes: changes,
+                                  auditTrail: false,
+                                  source: (_hits7 = hits) === null || _hits7 === void 0 ? void 0 : (_hits7$i = _hits7[i]) === null || _hits7$i === void 0 ? void 0 : _hits7$i._source,
+                                  cherryPick: true,
+                                  databaseDeleteOneRowFunction: _this.databaseDeleteOneRowFunction,
+                                  databaseAddOneRowFunction: _this.databaseAddOneRowFunction,
+                                  databaseUpdateOneRowFunction: _this.databaseUpdateOneRowFunction,
+                                  databaseCustomFunction: _this.databaseCustomFunction
+                                });
+
+                              case 19:
+                                _result6 = _context6.sent;
+
+                                _result.push(_result6);
+
+                                _context6.next = 25;
+                                break;
+
+                              case 23:
+                                changes = {
+                                  addedChange: {},
+                                  deletedChange: {},
+                                  updatedChange: {}
+                                };
+
+                                _result.push({});
+
+                              case 25:
+                                console.log("_result", _result);
+
+                              case 26:
+                              case "end":
+                                return _context6.stop();
+                            }
+                          }
+                        }, _loop);
+                      });
+                      i = 0;
+
+                    case 14:
+                      if (!(i < hits.length)) {
+                        _context7.next = 19;
+                        break;
+                      }
+
+                      return _context7.delegateYield(_loop(i), "t0", 16);
+
+                    case 16:
+                      i++;
+                      _context7.next = 14;
+                      break;
+
+                    case 19:
+                    case "end":
+                      return _context7.stop();
+                  }
+                }
+              }, _callee6);
+            })(), "t0", 16);
+
+          case 16:
+            return _context8.abrupt("return", _result);
+
+          case 17:
           case "end":
-            return _context6.stop();
+            return _context8.stop();
         }
       }
-    }, _callee6);
+    }, _callee7);
   }));
 
-  return function (_x9) {
-    return _ref20.apply(this, arguments);
+  return function (_x10) {
+    return _ref21.apply(this, arguments);
+  };
+}();
+
+auditTrail.prototype.checkout2 = /*#__PURE__*/function () {
+  var _ref23 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee8(_ref22) {
+    var commitHashMap, commitHash, currentCommit, result;
+    return _regeneratorRuntime__default['default'].wrap(function _callee8$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            commitHashMap = _ref22.commitHashMap, commitHash = _ref22.commitHash, currentCommit = _ref22.currentCommit;
+            console.log("commitHashMap", commitHashMap);
+            console.log("commitHash", commitHash);
+            console.log("currentCommit", currentCommit);
+
+            if (!(commitHash === currentCommit)) {
+              _context9.next = 6;
+              break;
+            }
+
+            return _context9.abrupt("return", {});
+
+          case 6:
+            result = getShortestPath({
+              commitHashMap: commitHashMap,
+              commitHash: commitHash,
+              currentCommit: currentCommit
+            });
+            console.log("result", result);
+            return _context9.abrupt("return", result);
+
+          case 9:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee8);
+  }));
+
+  return function (_x11) {
+    return _ref23.apply(this, arguments);
   };
 }(); // pick one commit to run again
 
 
 auditTrail.prototype.cherryPick = /*#__PURE__*/function () {
-  var _ref22 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee7(_ref21) {
-    var _search$body$hits$hit6, _search$body10, _search$body10$hits, _search$body10$hits$h, _search$body10$hits$h2, _search$body10$hits$h3;
+  var _ref25 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee9(_ref24) {
+    var _search$body$hits$hit6, _search$body5, _search$body5$hits, _search$body5$hits$hi, _search$body5$hits$hi2, _search$body5$hits$hi3;
 
-    var commitHash, parentTrail, search, data, _search$body11, _search$body11$hits, _search$body11$hits$h, _search$body11$hits$h2, _search$body11$hits$h3, _search$body13, _search$body13$hits, _search$body13$hits$h, _search$body13$hits$h2, _search$body13$hits$h3, _search$body15, _search$body15$hits, _search$body15$hits$h, _search$body15$hits$h2, _search$body15$hits$h3, _search$body$hits$hit7, _search$body17, _search$body17$hits, _search$body17$hits$h, _search$body17$hits$h2, _search$body17$hits$h3, _search$body18, _search$body18$hits, _search$body18$hits$h, _search$body18$hits$h2, _changes$updatedChang7, _changes$updatedChang8, _changes$addedChange11, _changes$addedChange12, _changes$deletedChang11, _changes$deletedChang12, changes, result, _search$body12, _search$body12$hits, _search$body12$hits$h, _search$body12$hits$h2, _changes$deletedChang7, _changes$deletedChang8, _search$body14, _search$body14$hits, _search$body14$hits$h, _search$body14$hits$h2, _changes$addedChange7, _changes$addedChange8, _search$body16, _search$body16$hits, _search$body16$hits$h, _search$body16$hits$h2, _changes$updatedChang5, _changes$updatedChang6, _changes$addedChange9, _changes$addedChange10, _changes$deletedChang9, _changes$deletedChang10;
+    var commitHash, parentTrail, search, data, _search$body6, _search$body6$hits, _search$body6$hits$hi, _search$body6$hits$hi2, _search$body6$hits$hi3, _search$body7, _search$body7$hits, _search$body7$hits$hi, _search$body7$hits$hi2, changes, result;
 
-    return _regeneratorRuntime__default['default'].wrap(function _callee7$(_context7) {
+    return _regeneratorRuntime__default['default'].wrap(function _callee9$(_context10) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context10.prev = _context10.next) {
           case 0:
-            commitHash = _ref21.commitHash, parentTrail = _ref21.parentTrail;
-            _context7.next = 3;
+            commitHash = _ref24.commitHash, parentTrail = _ref24.parentTrail;
+            _context10.next = 3;
             return queryElasticseaerch({
               commitHashArray: [commitHash],
               client: this.client
             });
 
           case 3:
-            search = _context7.sent;
-            data = JSON.parse((_search$body$hits$hit6 = search === null || search === void 0 ? void 0 : (_search$body10 = search.body) === null || _search$body10 === void 0 ? void 0 : (_search$body10$hits = _search$body10.hits) === null || _search$body10$hits === void 0 ? void 0 : (_search$body10$hits$h = _search$body10$hits.hits) === null || _search$body10$hits$h === void 0 ? void 0 : (_search$body10$hits$h2 = _search$body10$hits$h[0]) === null || _search$body10$hits$h2 === void 0 ? void 0 : (_search$body10$hits$h3 = _search$body10$hits$h2._source) === null || _search$body10$hits$h3 === void 0 ? void 0 : _search$body10$hits$h3.change) !== null && _search$body$hits$hit6 !== void 0 ? _search$body$hits$hit6 : null);
+            search = _context10.sent;
+            data = JSON.parse((_search$body$hits$hit6 = search === null || search === void 0 ? void 0 : (_search$body5 = search.body) === null || _search$body5 === void 0 ? void 0 : (_search$body5$hits = _search$body5.hits) === null || _search$body5$hits === void 0 ? void 0 : (_search$body5$hits$hi = _search$body5$hits.hits) === null || _search$body5$hits$hi === void 0 ? void 0 : (_search$body5$hits$hi2 = _search$body5$hits$hi[0]) === null || _search$body5$hits$hi2 === void 0 ? void 0 : (_search$body5$hits$hi3 = _search$body5$hits$hi2._source) === null || _search$body5$hits$hi3 === void 0 ? void 0 : _search$body5$hits$hi3.change) !== null && _search$body$hits$hit6 !== void 0 ? _search$body$hits$hit6 : null);
 
             if (!data) {
-              _context7.next = 33;
+              _context10.next = 13;
               break;
             }
 
             changes = getChanges({
               changed: data
             });
-            result = {};
-
-            if (!((search === null || search === void 0 ? void 0 : (_search$body11 = search.body) === null || _search$body11 === void 0 ? void 0 : (_search$body11$hits = _search$body11.hits) === null || _search$body11$hits === void 0 ? void 0 : (_search$body11$hits$h = _search$body11$hits.hits) === null || _search$body11$hits$h === void 0 ? void 0 : (_search$body11$hits$h2 = _search$body11$hits$h[0]) === null || _search$body11$hits$h2 === void 0 ? void 0 : (_search$body11$hits$h3 = _search$body11$hits$h2._source) === null || _search$body11$hits$h3 === void 0 ? void 0 : _search$body11$hits$h3.action) === "CREATE")) {
-              _context7.next = 15;
-              break;
-            }
-
-            _context7.next = 11;
-            return this.databaseAddOneRowFunction({
-              data: search === null || search === void 0 ? void 0 : (_search$body12 = search.body) === null || _search$body12 === void 0 ? void 0 : (_search$body12$hits = _search$body12.hits) === null || _search$body12$hits === void 0 ? void 0 : (_search$body12$hits$h = _search$body12$hits.hits) === null || _search$body12$hits$h === void 0 ? void 0 : (_search$body12$hits$h2 = _search$body12$hits$h[0]) === null || _search$body12$hits$h2 === void 0 ? void 0 : _search$body12$hits$h2._source,
-              changedObj: (_changes$deletedChang7 = changes.deletedChange) === null || _changes$deletedChang7 === void 0 ? void 0 : _changes$deletedChang7.diff,
-              flattedchanged: (_changes$deletedChang8 = changes.deletedChange) === null || _changes$deletedChang8 === void 0 ? void 0 : _changes$deletedChang8.change,
+            _context10.next = 9;
+            return revertCommit({
+              action: search === null || search === void 0 ? void 0 : (_search$body6 = search.body) === null || _search$body6 === void 0 ? void 0 : (_search$body6$hits = _search$body6.hits) === null || _search$body6$hits === void 0 ? void 0 : (_search$body6$hits$hi = _search$body6$hits.hits) === null || _search$body6$hits$hi === void 0 ? void 0 : (_search$body6$hits$hi2 = _search$body6$hits$hi[0]) === null || _search$body6$hits$hi2 === void 0 ? void 0 : (_search$body6$hits$hi3 = _search$body6$hits$hi2._source) === null || _search$body6$hits$hi3 === void 0 ? void 0 : _search$body6$hits$hi3.action,
+              changes: changes,
               auditTrail: true,
+              source: search === null || search === void 0 ? void 0 : (_search$body7 = search.body) === null || _search$body7 === void 0 ? void 0 : (_search$body7$hits = _search$body7.hits) === null || _search$body7$hits === void 0 ? void 0 : (_search$body7$hits$hi = _search$body7$hits.hits) === null || _search$body7$hits$hi === void 0 ? void 0 : (_search$body7$hits$hi2 = _search$body7$hits$hi[0]) === null || _search$body7$hits$hi2 === void 0 ? void 0 : _search$body7$hits$hi2._source,
+              cherryPick: true,
+              databaseDeleteOneRowFunction: this.databaseDeleteOneRowFunction,
+              databaseAddOneRowFunction: this.databaseAddOneRowFunction,
+              databaseUpdateOneRowFunction: this.databaseUpdateOneRowFunction,
+              databaseCustomFunction: this.databaseCustomFunction,
               parentTrail: parentTrail
             });
 
-          case 11:
-            result.added = _context7.sent;
-            return _context7.abrupt("return", result);
+          case 9:
+            result = _context10.sent;
+            return _context10.abrupt("return", result);
 
-          case 15:
-            if (!((search === null || search === void 0 ? void 0 : (_search$body13 = search.body) === null || _search$body13 === void 0 ? void 0 : (_search$body13$hits = _search$body13.hits) === null || _search$body13$hits === void 0 ? void 0 : (_search$body13$hits$h = _search$body13$hits.hits) === null || _search$body13$hits$h === void 0 ? void 0 : (_search$body13$hits$h2 = _search$body13$hits$h[0]) === null || _search$body13$hits$h2 === void 0 ? void 0 : (_search$body13$hits$h3 = _search$body13$hits$h2._source) === null || _search$body13$hits$h3 === void 0 ? void 0 : _search$body13$hits$h3.action) === "DELETE")) {
-              _context7.next = 22;
-              break;
-            }
+          case 13:
+            return _context10.abrupt("return", null);
 
-            _context7.next = 18;
-            return this.databaseDeleteOneRowFunction({
-              data: search === null || search === void 0 ? void 0 : (_search$body14 = search.body) === null || _search$body14 === void 0 ? void 0 : (_search$body14$hits = _search$body14.hits) === null || _search$body14$hits === void 0 ? void 0 : (_search$body14$hits$h = _search$body14$hits.hits) === null || _search$body14$hits$h === void 0 ? void 0 : (_search$body14$hits$h2 = _search$body14$hits$h[0]) === null || _search$body14$hits$h2 === void 0 ? void 0 : _search$body14$hits$h2._source,
-              changedObj: (_changes$addedChange7 = changes.addedChange) === null || _changes$addedChange7 === void 0 ? void 0 : _changes$addedChange7.diff,
-              flattedchanged: (_changes$addedChange8 = changes.addedChange) === null || _changes$addedChange8 === void 0 ? void 0 : _changes$addedChange8.change,
-              auditTrail: true,
-              parentTrail: parentTrail
-            });
-
-          case 18:
-            result.deleted = _context7.sent;
-            return _context7.abrupt("return", result);
-
-          case 22:
-            if (!((search === null || search === void 0 ? void 0 : (_search$body15 = search.body) === null || _search$body15 === void 0 ? void 0 : (_search$body15$hits = _search$body15.hits) === null || _search$body15$hits === void 0 ? void 0 : (_search$body15$hits$h = _search$body15$hits.hits) === null || _search$body15$hits$h === void 0 ? void 0 : (_search$body15$hits$h2 = _search$body15$hits$h[0]) === null || _search$body15$hits$h2 === void 0 ? void 0 : (_search$body15$hits$h3 = _search$body15$hits$h2._source) === null || _search$body15$hits$h3 === void 0 ? void 0 : _search$body15$hits$h3.action) === "UPDATE")) {
-              _context7.next = 27;
-              break;
-            }
-
-            _context7.next = 25;
-            return this.databaseUpdateOneRowFunction({
-              data: search === null || search === void 0 ? void 0 : (_search$body16 = search.body) === null || _search$body16 === void 0 ? void 0 : (_search$body16$hits = _search$body16.hits) === null || _search$body16$hits === void 0 ? void 0 : (_search$body16$hits$h = _search$body16$hits.hits) === null || _search$body16$hits$h === void 0 ? void 0 : (_search$body16$hits$h2 = _search$body16$hits$h[0]) === null || _search$body16$hits$h2 === void 0 ? void 0 : _search$body16$hits$h2._source,
-              changedObj: (_changes$updatedChang5 = changes.updatedChange) === null || _changes$updatedChang5 === void 0 ? void 0 : _changes$updatedChang5.diff,
-              flattedchanged: (_changes$updatedChang6 = changes.updatedChange) === null || _changes$updatedChang6 === void 0 ? void 0 : _changes$updatedChang6.change,
-              addChangedObj: (_changes$addedChange9 = changes.addedChange) === null || _changes$addedChange9 === void 0 ? void 0 : _changes$addedChange9.diff,
-              addFlattedchanged: (_changes$addedChange10 = changes.addedChange) === null || _changes$addedChange10 === void 0 ? void 0 : _changes$addedChange10.change,
-              deleteChangedObj: (_changes$deletedChang9 = changes.deletedChange) === null || _changes$deletedChang9 === void 0 ? void 0 : _changes$deletedChang9.diff,
-              deleteFlattedchanged: (_changes$deletedChang10 = changes.deletedChange) === null || _changes$deletedChang10 === void 0 ? void 0 : _changes$deletedChang10.change,
-              revert: false
-            });
-
-          case 25:
-            result.updated = _context7.sent;
-            return _context7.abrupt("return", result);
-
-          case 27:
-            _context7.next = 29;
-            return this.databaseCustomFunction({
-              action: (_search$body$hits$hit7 = search === null || search === void 0 ? void 0 : (_search$body17 = search.body) === null || _search$body17 === void 0 ? void 0 : (_search$body17$hits = _search$body17.hits) === null || _search$body17$hits === void 0 ? void 0 : (_search$body17$hits$h = _search$body17$hits.hits) === null || _search$body17$hits$h === void 0 ? void 0 : (_search$body17$hits$h2 = _search$body17$hits$h[0]) === null || _search$body17$hits$h2 === void 0 ? void 0 : (_search$body17$hits$h3 = _search$body17$hits$h2._source) === null || _search$body17$hits$h3 === void 0 ? void 0 : _search$body17$hits$h3.action) !== null && _search$body$hits$hit7 !== void 0 ? _search$body$hits$hit7 : "ERROR",
-              data: search === null || search === void 0 ? void 0 : (_search$body18 = search.body) === null || _search$body18 === void 0 ? void 0 : (_search$body18$hits = _search$body18.hits) === null || _search$body18$hits === void 0 ? void 0 : (_search$body18$hits$h = _search$body18$hits.hits) === null || _search$body18$hits$h === void 0 ? void 0 : (_search$body18$hits$h2 = _search$body18$hits$h[0]) === null || _search$body18$hits$h2 === void 0 ? void 0 : _search$body18$hits$h2._source,
-              changedObj: (_changes$updatedChang7 = changes.updatedChange) === null || _changes$updatedChang7 === void 0 ? void 0 : _changes$updatedChang7.diff,
-              flattedchanged: (_changes$updatedChang8 = changes.updatedChange) === null || _changes$updatedChang8 === void 0 ? void 0 : _changes$updatedChang8.change,
-              addChangedObj: (_changes$addedChange11 = changes.addedChange) === null || _changes$addedChange11 === void 0 ? void 0 : _changes$addedChange11.diff,
-              addFlattedchanged: (_changes$addedChange12 = changes.addedChange) === null || _changes$addedChange12 === void 0 ? void 0 : _changes$addedChange12.change,
-              deleteChangedObj: (_changes$deletedChang11 = changes.deletedChange) === null || _changes$deletedChang11 === void 0 ? void 0 : _changes$deletedChang11.diff,
-              deleteFlattedchanged: (_changes$deletedChang12 = changes.deletedChange) === null || _changes$deletedChang12 === void 0 ? void 0 : _changes$deletedChang12.change,
-              revert: false
-            });
-
-          case 29:
-            result.updated = _context7.sent;
-            return _context7.abrupt("return", result);
-
-          case 33:
-            return _context7.abrupt("return", null);
-
-          case 34:
+          case 14:
           case "end":
-            return _context7.stop();
+            return _context10.stop();
         }
       }
-    }, _callee7, this);
+    }, _callee9, this);
   }));
 
-  return function (_x10) {
-    return _ref22.apply(this, arguments);
+  return function (_x12) {
+    return _ref25.apply(this, arguments);
   };
 }(); // add data into db
 
 
 auditTrail.prototype.createData = /*#__PURE__*/function () {
-  var _ref24 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee8(_ref23) {
-    var categoryId, userId, dataId, name, _ref23$before, before, after, parent, action, _ref23$ignore, ignore, otherArgs, indexName, change, i, diff, parentTrail, trailSession, hash, data, commitHash, insertdata;
+  var _ref27 = _asyncToGenerator__default['default']( /*#__PURE__*/_regeneratorRuntime__default['default'].mark(function _callee10(_ref26) {
+    var categoryId, userId, dataId, name, _ref26$before, before, after, parent, action, _ref26$ignore, ignore, otherArgs, indexName, change, i, diff, parentTrail, trailSession, hash, data, commitHash, insertdata;
 
-    return _regeneratorRuntime__default['default'].wrap(function _callee8$(_context8) {
+    return _regeneratorRuntime__default['default'].wrap(function _callee10$(_context11) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context11.prev = _context11.next) {
           case 0:
-            categoryId = _ref23.categoryId, userId = _ref23.userId, dataId = _ref23.dataId, name = _ref23.name, _ref23$before = _ref23.before, before = _ref23$before === void 0 ? {} : _ref23$before, after = _ref23.after, parent = _ref23.parent, action = _ref23.action, _ref23$ignore = _ref23.ignore, ignore = _ref23$ignore === void 0 ? [] : _ref23$ignore, otherArgs = _objectWithoutProperties__default['default'](_ref23, ["categoryId", "userId", "dataId", "name", "before", "after", "parent", "action", "ignore"]);
+            categoryId = _ref26.categoryId, userId = _ref26.userId, dataId = _ref26.dataId, name = _ref26.name, _ref26$before = _ref26.before, before = _ref26$before === void 0 ? {} : _ref26$before, after = _ref26.after, parent = _ref26.parent, action = _ref26.action, _ref26$ignore = _ref26.ignore, ignore = _ref26$ignore === void 0 ? [] : _ref26$ignore, otherArgs = _objectWithoutProperties__default['default'](_ref26, ["categoryId", "userId", "dataId", "name", "before", "after", "parent", "action", "ignore"]);
             indexName = this.indexName;
 
             if ((___default['default'].isEmpty(action) || !action) && action !== "") {
@@ -1561,7 +1818,7 @@ auditTrail.prototype.createData = /*#__PURE__*/function () {
               trailSession: trailSession,
               commitHash: commitHash
             });
-            _context8.next = 12;
+            _context11.next = 12;
             return elasticsearchInsert({
               indexName: indexName,
               insertdata: insertdata,
@@ -1569,29 +1826,29 @@ auditTrail.prototype.createData = /*#__PURE__*/function () {
             });
 
           case 12:
-            return _context8.abrupt("return", insertdata);
+            return _context11.abrupt("return", insertdata);
 
           case 13:
           case "end":
-            return _context8.stop();
+            return _context11.stop();
         }
       }
-    }, _callee8, this);
+    }, _callee10, this);
   }));
 
-  return function (_x11) {
-    return _ref24.apply(this, arguments);
+  return function (_x13) {
+    return _ref27.apply(this, arguments);
   };
 }(); // modify commit map object
 
 
-auditTrail.prototype.appendCommitMap = function (_ref25) {
-  var _ref25$currentCommitM = _ref25.currentCommitMap,
-      currentCommitMap = _ref25$currentCommitM === void 0 ? "{}" : _ref25$currentCommitM,
-      _ref25$currentCommitH = _ref25.currentCommitHash,
-      currentCommitHash = _ref25$currentCommitH === void 0 ? "" : _ref25$currentCommitH,
-      _ref25$newCommitHash = _ref25.newCommitHash,
-      newCommitHash = _ref25$newCommitHash === void 0 ? "" : _ref25$newCommitHash;
+auditTrail.prototype.appendCommitMap = function (_ref28) {
+  var _ref28$currentCommitM = _ref28.currentCommitMap,
+      currentCommitMap = _ref28$currentCommitM === void 0 ? "{}" : _ref28$currentCommitM,
+      _ref28$currentCommitH = _ref28.currentCommitHash,
+      currentCommitHash = _ref28$currentCommitH === void 0 ? "" : _ref28$currentCommitH,
+      _ref28$newCommitHash = _ref28.newCommitHash,
+      newCommitHash = _ref28$newCommitHash === void 0 ? "" : _ref28$newCommitHash;
   var commitMap = yamlLikeStringParser({
     input: currentCommitMap
   });
@@ -1631,7 +1888,6 @@ auditTrail.prototype.appendCommitMap = function (_ref25) {
       }));
     }
 
-    console.log("levelIndexArray", levelIndexArray);
     levelIndexArray = levelIndexArray.reverse();
     var path = [];
 

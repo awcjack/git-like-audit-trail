@@ -1,7 +1,5 @@
 <h1 align="center">Git Like Audit Trail</h1>
 
-<h2 align="center" style="color:Red"><b>This Project still under development & testing</b></h2>
-
 A library that handling audit trail like git.
 Using Elasticsearch (allow using custom client later) to store audit-trail data.
 
@@ -9,9 +7,14 @@ Using Elasticsearch (allow using custom client later) to store audit-trail data.
 
 `yarn add git-like-audit-trail`
 
+## Screenshot
+![](screenshot/branchout-info.png)
+![](screenshot/function.png)
+![](screenshot/more-branch.png)
+
 ## Demo
 * [Backend](https://github.com/awcjack/git-like-audit-trail-backend-demo)
-* FrontEnd (Preparing)
+* [FrontEnd](https://github.com/awcjack/git-like-audit-trail-frontend-demo)
 
 ## Usage:
 ```javascript
@@ -69,7 +72,7 @@ const _auditTrail = new auditTrail({
 * [batchQueryByCommitHash](#batchQueryByCommitHash): Query commit info by commitHashArray
 * [revertCommit](#revertCommit): Revert commit like git
 * [cherryPick](#cherryPick): Cherry Pick like git
-* [checkout](#checkout): checkout to other commit/branch <span style="color:yellow">**Not yet implemented**</span>
+* [checkout](#checkout): checkout to other commit/branch
 
 ## Function usage
 `await` need to execute in [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
@@ -238,19 +241,23 @@ console.log(result)
 }
 */
 ```
-### checkout <span style="color:yellow">**Not yet implemented**</span>:
+### checkout:
 ```javascript
 const result = await _auditTrail.checkout({
     commitHashMap: commitHashMap.commitMap,
     currentCommit: currentCommit.commitHash,
     commitHash: req.params.hash,
 })
+console.log(result)
+/*
+[{"deleted":{"error":false,"content":{"id":"23","name":"test23"}}}]
+*/
 ```
 
 ## To do
 * verify tree structure & logic
-* handle checkout
+* ~~handle checkout~~
 * handle merge (may or may not implement)
 * custom client
-* provide frontend demo
+* ~~provide frontend demo~~
 * handle batch CUD in demo

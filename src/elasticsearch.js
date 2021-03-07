@@ -26,7 +26,7 @@ export async function elasticsearchInsert({
         const result = await client.index({
             index: indexName,
             op_type: "create",
-            refresh: "false",
+            refresh: "true",
             body: insertdata
         })
         return result.body

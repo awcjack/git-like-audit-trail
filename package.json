@@ -1,7 +1,7 @@
 {
   "name": "git-like-audit-trail",
-  "version": "0.0.6",
-  "description": "Git like audit trail system",
+  "version": "1.0.0",
+  "description": "Git like audit trail",
   "main": "dist/bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -31,7 +31,6 @@
     "audit-trail",
     "audit",
     "trail",
-    "awcjack",
     "git-like",
     "git"
   ]
